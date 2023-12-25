@@ -1,1 +1,1 @@
-Check your pre advising and time clash in advance with this Web Application made with REACT
+Check your pre advising time clash in advance with this application
