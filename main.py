@@ -1,3 +1,19 @@
+import subprocess
+
+required_packages = ['PyQt6', 'requests', 'beautifulsoup4']
+
+missing_packages = [pkg for pkg in required_packages if not globals().get(pkg)]
+
+if missing_packages:
+    try:
+        subprocess.run(['pip', 'install'] + missing_packages)
+
+        print("Packages installed successfully.")
+    except Exception as e:
+        print(f"Error installing packages: {e}")
+else:
+    print("All required packages are already installed.")
+
 import webbrowser
 from PyQt6 import QtCore, QtWidgets
 from PyQt6.QtCore import Qt
