@@ -1,7 +1,7 @@
 import webbrowser
 from PyQt6 import QtCore, QtWidgets
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QCursor
+from PyQt6.QtGui import QCursor, QIcon
 from basic import Ui_BasicWindow
 from advance import Ui_AdvanceWindow
 from login import Ui_LoginWindow
@@ -46,6 +46,10 @@ class Ui_MainWindow(object):
 
     def setupUi(self, MainWindow, main_ui):
 
+        icon_path = "./icon.png"  # Replace with the actual path to your icon file
+        icon = QIcon(icon_path)
+        MainWindow.setWindowIcon(icon)
+
         self.main_ui = main_ui
         MainWindow.resize(900, 600)
         MainWindow.setMinimumSize(QtCore.QSize(900, 600))
@@ -57,18 +61,18 @@ class Ui_MainWindow(object):
 
         # header
         self.header = object_builder(QtWidgets.QLabel(parent=self.centralwidget), (219, 69, 461, 101), "Pre Advising",
-                                     80, True, "")
+                                     60, True, "")
         self.header.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
 
         # Name
-        self.myName: QtWidgets.QPushButton = object_builder(QtWidgets.QPushButton(parent=self.centralwidget), (488, 147, 151, 20),
+        self.myName: QtWidgets.QPushButton = object_builder(QtWidgets.QPushButton(parent=self.centralwidget), (506, 152, 151, 20),
                                      "by Shariar Islam Shuvo", None, True,
                                      "QPushButton::!hover{background-color: rgba(0, 0, 0, 0);} QPushButton::hover{background-color: rgba(0, 0, 0, 0); color:red;}",
                                      myNameClicked, None, "You are welcome :)")
 
         # Heading Text 1
         self.heading_text_1 = object_builder(QtWidgets.QLabel(parent=self.centralwidget), (124, 280, 261, 71),
-                                             "Basic Advising", 29, True, "background-color: rgba(23, 23, 23, 1);")
+                                             "Basic Advising", 20, True, "background-color: rgba(23, 23, 23, 1);")
         self.heading_text_1.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
 
         # Comment Text 1
@@ -87,7 +91,7 @@ class Ui_MainWindow(object):
 
         # Heading Text 2
         self.heading_text_2 = object_builder(QtWidgets.QLabel(parent=self.centralwidget), (513, 280, 261, 71),
-                                             "Advance Advising", 29, True, "background-color: rgba(23, 23, 23, 1);")
+                                             "Advance Advising", 20, True, "background-color: rgba(23, 23, 23, 1);")
         self.heading_text_2.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
 
         # Comment Text 2
@@ -105,7 +109,7 @@ class Ui_MainWindow(object):
                                              "This mode will update data directly from USIS which is much more accurate than basic mode")
 
         self.my_name = object_builder(QtWidgets.QPushButton(parent=self.centralwidget), (30, 560, 200, 20),
-                                      "Created By: Shariar Islam Shuvo", 12, False,
+                                      "Created By: Shariar Islam Shuvo", 10, False,
                                       "QPushButton::hover{color:red}", myNameClicked, self.pointingHandMouse,
                                       "Click to visit my Facebook Profile")
         self.github = object_builder(QtWidgets.QPushButton(parent=self.centralwidget), (250, 560, 150, 20), "GitHub", 12,

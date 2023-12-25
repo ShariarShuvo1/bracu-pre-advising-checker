@@ -2,8 +2,8 @@ import requests
 import webbrowser
 from PyQt6 import QtCore, QtWidgets, QtGui
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QCursor
-from PyQt6.QtWidgets import QMessageBox, QTableWidgetItem, QListWidgetItem
+from PyQt6.QtGui import QCursor, QScreen, QPixmap, QImageWriter, QGuiApplication, QIcon
+from PyQt6.QtWidgets import QMessageBox, QTableWidgetItem, QListWidgetItem, QApplication
 from ObjectBuilder import object_builder
 from internetChecker import internet_checker
 from Course import Course
@@ -214,7 +214,7 @@ class Ui_BasicWindow(object):
         if internet_checker():
             self.download()
 
-        self.font_size = int(0.8*self.unitWidth)
+        self.font_size = int(0.6*self.unitWidth)
 
         # Back Button
         self.backButton = object_builder(QtWidgets.QPushButton(parent=self.centralwidget), (int(self.unitWidth*0.5), 1, self.unitWidth*6, self.unitHeight*4), "<- BACK", self.font_size, False, "QPushButton::!hover { border: 1px solid white; background-color: rgba(0, 0, 0, 0);} QPushButton::hover {border : 1px solid red; background-color: rgba(0, 0, 0, 0);};", self.backButtonClicked, self.pointingHandMouse, "Return to home page")
@@ -245,43 +245,43 @@ class Ui_BasicWindow(object):
         self.advanceSearch = object_builder(QtWidgets.QCheckBox(parent=self.centralwidget), (int((self.unitWidth * 81) + (self.unitWidth * 0.5)), 1, self.unitWidth * 9, self.unitHeight * 4), "Advance Search", self.font_size, False, "border: 1px solid white; background-color: rgba(0, 0, 0, 0);", self.advanceSearchClicked, self.pointingHandMouse, "You will be able to filter data using keyword")
 
         # Left Search Bar
-        self.left_search: QtWidgets.QLineEdit = object_builder(QtWidgets.QLineEdit(parent=self.centralwidget), (int(self.unitWidth*0.5), int(self.unitHeight*5), int(self.unitWidth*15), int(self.unitHeight*4)), "Search", self.font_size+5, False, "QLineEdit{border:1px solid white; color: white}")
+        self.left_search: QtWidgets.QLineEdit = object_builder(QtWidgets.QLineEdit(parent=self.centralwidget), (int(self.unitWidth*0.5), int(self.unitHeight*5), int(self.unitWidth*20), int(self.unitHeight*4)), "Search", self.font_size+5, False, "QLineEdit{border:1px solid white; color: white}")
         self.left_search.textEdited.connect(self.leftSearchChanged)
 
         # Left List Viewer
-        self.left_listViewer: QtWidgets.QListWidget = object_builder(QtWidgets.QListWidget(parent=self.centralwidget), (int(self.unitWidth*0.5), int(self.unitHeight*10), int(self.unitWidth*15), int((self.unitHeight*100)-(self.unitHeight*11))), None, self.font_size, False, "QListWidget{border:1px solid white; alternate-background-color: #232323;background-color: black;};")
+        self.left_listViewer: QtWidgets.QListWidget = object_builder(QtWidgets.QListWidget(parent=self.centralwidget), (int(self.unitWidth*0.5), int(self.unitHeight*10), int(self.unitWidth*20), int((self.unitHeight*100)-(self.unitHeight*11))), None, self.font_size, False, "QListWidget{border:1px solid white; alternate-background-color: #232323;background-color: black; padding: 2px;} QListWidget::item { margin-bottom: 6px; } QListWidget::item:selected { background-color: #630700; font-weight: bold; font-color:yellow; border: 1px solid blue;} QListWidget::item:hover{background-color: #360501;};")
         self.left_listViewer.setAlternatingRowColors(True)
         self.left_listViewer.itemSelectionChanged.connect(self.left_listViewer_selection_changed)
 
         # # Add Button
-        self.addButton = object_builder(QtWidgets.QPushButton(parent=self.centralwidget), (int(self.unitWidth*16), int(self.unitHeight*10), int(self.unitWidth*6), int(self.unitHeight*4)), "Add ->", self.font_size, True, "QPushButton{border:1px solid yellow} QPushButton::hover{border:1px solid green; color:green}", self.addButtonClicked, self.pointingHandMouse, "Add the selected course to your list")
+        self.addButton = object_builder(QtWidgets.QPushButton(parent=self.centralwidget), (int(self.unitWidth*21), int(self.unitHeight*10), int(self.unitWidth*6), int(self.unitHeight*4)), "Add ->", self.font_size, True, "QPushButton{border:1px solid yellow} QPushButton::hover{border:1px solid green; color:green}", self.addButtonClicked, self.pointingHandMouse, "Add the selected course to your list")
 
         # Remove Button
-        self.removeButton = object_builder(QtWidgets.QPushButton(parent=self.centralwidget), (int(self.unitWidth*16), int(self.unitHeight*14.5), int(self.unitWidth*6), int(self.unitHeight*4)), "<- Remove", self.font_size, True, "QPushButton{border:1px solid yellow} QPushButton::hover{border:1px solid magenta; color: magenta}", self.removeButtonClicked, self.pointingHandMouse, "Remove the course from your list")
+        self.removeButton = object_builder(QtWidgets.QPushButton(parent=self.centralwidget), (int(self.unitWidth*21), int(self.unitHeight*14.5), int(self.unitWidth*6), int(self.unitHeight*4)), "<- Remove", self.font_size, True, "QPushButton{border:1px solid yellow} QPushButton::hover{border:1px solid magenta; color: magenta}", self.removeButtonClicked, self.pointingHandMouse, "Remove the course from your list")
         #
         # Clear All Button
-        self.clearButton = object_builder(QtWidgets.QPushButton(parent=self.centralwidget), (int(self.unitWidth*16), int(self.unitHeight*19), int(self.unitWidth*6), int(self.unitHeight*4)), "Clear -X", self.font_size, True, "QPushButton{border:1px solid yellow} QPushButton::hover{border:1px solid red; color:red}", self.clearButtonClicked, self.pointingHandMouse, "Remove all the course from your list")
+        self.clearButton = object_builder(QtWidgets.QPushButton(parent=self.centralwidget), (int(self.unitWidth*21), int(self.unitHeight*19), int(self.unitWidth*6), int(self.unitHeight*4)), "Clear -X", self.font_size, True, "QPushButton{border:1px solid yellow} QPushButton::hover{border:1px solid red; color:red}", self.clearButtonClicked, self.pointingHandMouse, "Remove all the course from your list")
 
         # Right Search Bar
-        self.right_search: QtWidgets.QLineEdit = object_builder(QtWidgets.QLineEdit(parent=self.centralwidget), (int(self.unitWidth*22.5), int(self.unitHeight*5), int(self.unitWidth*15), int(self.unitHeight*4)), "Search", self.font_size+5, False, "QLineEdit{border:1px solid white; color: white}")
+        self.right_search: QtWidgets.QLineEdit = object_builder(QtWidgets.QLineEdit(parent=self.centralwidget), (int(self.unitWidth*27.5), int(self.unitHeight*5), int(self.unitWidth*20), int(self.unitHeight*4)), "Search", self.font_size+5, False, "QLineEdit{border:1px solid white; color: white}")
         self.right_search.textEdited.connect(self.rightSearchChanged)
 
         # Right List Viewer
-        self.right_listViewer = object_builder(QtWidgets.QListWidget(parent=self.centralwidget), (int(self.unitWidth*22.5), int(self.unitHeight*10), int(self.unitWidth*15), int(self.unitHeight*25)), None, self.font_size, False, "QListWidget{border:1px solid white; alternate-background-color: #232323;background-color: black;};")
+        self.right_listViewer = object_builder(QtWidgets.QListWidget(parent=self.centralwidget), (int(self.unitWidth*27.5), int(self.unitHeight*10), int(self.unitWidth*20), int(self.unitHeight*25)), None, self.font_size, False, "QListWidget{border:1px solid white; alternate-background-color: #232323;background-color: black; padding: 2px;} QListWidget::item { margin-bottom: 6px; } QListWidget::item:selected { background-color: #630700; font-weight: bold; font-color:yellow; border: 1px solid blue;} QListWidget::item:hover{background-color: #360501;};")
         self.right_listViewer.setAlternatingRowColors(True)
         self.right_listViewer.itemSelectionChanged.connect(self.right_listViewer_selection_changed)
 
         # Details Viewer
-        self.details_listViewer: QtWidgets.QListWidget = object_builder(QtWidgets.QListWidget(parent=self.centralwidget), (int(self.unitWidth*22.5), int(self.unitHeight*36), int(self.unitWidth*15), int((self.unitHeight*100)-(self.unitHeight*37))), None, self.font_size, False, "QListWidget{border:1px solid white; color:white; alternate-background-color: #232323;background-color: black;};")
+        self.details_listViewer: QtWidgets.QListWidget = object_builder(QtWidgets.QListWidget(parent=self.centralwidget), (int(self.unitWidth*27.5), int(self.unitHeight*36), int(self.unitWidth*20), int((self.unitHeight*100)-(self.unitHeight*37))), None, self.font_size, False, "QListWidget{border:1px solid white; color:white; alternate-background-color: #232323;background-color: black;};")
         self.details_listViewer.setAlternatingRowColors(True)
         self.setupSchedule()
 
-        self.my_name = object_builder(QtWidgets.QPushButton(parent=self.centralwidget), (int(self.unitWidth*38), int((self.unitHeight*100) - (self.unitHeight*10)) + int(self.unitHeight*5), int(self.unitWidth*15), int(self.unitHeight*2)), "Created By: Shariar Islam Shuvo", self.font_size, False, "QPushButton::hover{color:red}", myNameClicked, self.pointingHandMouse, "Click to visit my Facebook Profile")
-        self.github = object_builder(QtWidgets.QPushButton(parent=self.centralwidget), (int(self.unitWidth * 55), int((self.unitHeight * 100) - (self.unitHeight * 10)) + int(self.unitHeight * 5), int(self.unitWidth * 6), int(self.unitHeight * 2)), "GitHub", self.font_size, False, "QPushButton::hover{color:red}", githubClicked, self.pointingHandMouse, "Click to visit GitHub repo for this project")
+        self.my_name = object_builder(QtWidgets.QPushButton(parent=self.centralwidget), (int(self.unitWidth*48), int((self.unitHeight*100) - (self.unitHeight*10)) + int(self.unitHeight*5), int(self.unitWidth*15), int(self.unitHeight*2)), "Created By: Shariar Islam Shuvo", self.font_size, False, "QPushButton::hover{color:red}", myNameClicked, self.pointingHandMouse, "Click to visit my Facebook Profile")
+        self.github = object_builder(QtWidgets.QPushButton(parent=self.centralwidget), (int(self.unitWidth * 65), int((self.unitHeight * 100) - (self.unitHeight * 10)) + int(self.unitHeight * 5), int(self.unitWidth * 6), int(self.unitHeight * 2)), "GitHub", self.font_size, False, "QPushButton::hover{color:red}", githubClicked, self.pointingHandMouse, "Click to visit GitHub repo for this project")
 
     def setupSchedule(self):
         self.table = QtWidgets.QTableWidget(parent=self.centralwidget)
-        self.table.setGeometry(QtCore.QRect(int(self.unitWidth*38), int(self.unitHeight*5), int((self.unitWidth*100) - (self.unitWidth*39)), int((self.unitHeight*100) - (self.unitHeight*10))))
+        self.table.setGeometry(QtCore.QRect(int(self.unitWidth*48), int(self.unitHeight*5), int((self.unitWidth*90) - (self.unitWidth*39)), int((self.unitHeight*100) - (self.unitHeight*10))))
         self.table.setRowCount(26)
         self.table.setColumnCount(7)
 
@@ -289,6 +289,7 @@ class Ui_BasicWindow(object):
         times = ['08:00 AM - \n09:20 AM', '08:00 AM - \n11:05 AM', '09:00 AM - \n09:55 AM',  '09:00 AM - \n12:00 PM', '09:00 AM - \n12:05 PM', '09:00 AM - \n01:10 PM', '09:30 AM - \n10:50 AM', '10:05 AM - \n11:00 AM', '11:00 AM - \n12:20 PM', '11:00 AM - \n01:30 AM', '11:10 AM - \n12:05 PM', '12:15 PM - \n01:10 PM', '12:30 PM - \n01:30 PM', '12:30 PM - \n01:50 PM', '01:20 PM - \n02:15 PM', '02:00 PM - \n02:55 PM', '02:00 PM - \n03:20 PM', '02:00 PM - \n04:00 PM', '02:00 PM - \n05:05 PM', '03:05 PM - \n04:00 PM', '03:30 PM - \n04:50 PM', '04:10 PM - \n05:05 PM', '05:00 PM - \n06:20 PM', '05:00 PM - \n06:30 PM', '05:05 PM - \n06:00 PM', '06:00 PM - \n09:00 PM']
         self.table.setHorizontalHeaderLabels(days)
         self.table.setVerticalHeaderLabels(times)
+        self.table.setStyleSheet("color: black; font-weight: bold; alternate-background-color: #171717; gridline-color: gray; ")
         self.table.setAlternatingRowColors(True)
         for i in range(0, 26):
             self.table.hideRow(i)
@@ -296,6 +297,9 @@ class Ui_BasicWindow(object):
         self.table.setDisabled(True)
 
     def setupUi(self, BasicWindow, MainWindow, basic_ui):
+        icon_path = "./icon.png"  # Replace with the actual path to your icon file
+        icon = QIcon(icon_path)
+        BasicWindow.setWindowIcon(icon)
         self.basic_ui = basic_ui
         self.BasicWindow = BasicWindow
         self.MainWindow = MainWindow

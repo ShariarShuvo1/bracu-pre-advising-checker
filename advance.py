@@ -1,7 +1,7 @@
 import webbrowser
 from PyQt6 import QtCore, QtWidgets, QtGui
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QCursor
+from PyQt6.QtGui import QCursor, QIcon
 from PyQt6.QtWidgets import QMessageBox, QTableWidgetItem, QListWidgetItem
 from ObjectBuilder import object_builder
 from internetChecker import internet_checker
@@ -149,7 +149,7 @@ class Ui_AdvanceWindow(object):
         self.AdvanceWindow.setCursor(QCursor(Qt.CursorShape.BusyCursor))
         self.jsonThreadParser = jsonThread()
         self.jsonThreadParser.setter(
-            "https://usis.bracu.ac.bd/academia/academicSection/listAcademicSectionWithSchedule?academiaSession=627122&_search=false&nd=1692364983604&rows=-1&page=1&sidx=course_code&sord=asc",
+            "https://usis.bracu.ac.bd/academia/academicSection/listAcademicSectionWithSchedule?academiaSession=627123&_search=false&nd=1692364983604&rows=-1&page=1&sidx=course_code&sord=asc",
             self.advance_ui, self.session)
         self.jsonThreadParser.start()
 
@@ -162,7 +162,7 @@ class Ui_AdvanceWindow(object):
         self.createCourse()
         self.htmlThreadParser = loggedInThread()
         self.htmlThreadParser.setter(
-            "https://usis.bracu.ac.bd/academia/studentCourse/showCourseStatusList?query=&academiaSession=627122&_search=false&nd=1692363291093&rows=-1&page=1&sidx=id&sord=desc",
+            "https://usis.bracu.ac.bd/academia/studentCourse/showCourseStatusList?query=&academiaSession=627123&_search=false&nd=1692363291093&rows=-1&page=1&sidx=id&sord=desc",
             self.advance_ui, self.session)
         self.htmlThreadParser.start()
 
@@ -227,7 +227,7 @@ class Ui_AdvanceWindow(object):
         if internet_checker():
             self.download()
 
-        self.font_size = int(0.8 * self.unitWidth)
+        self.font_size = int(0.6 * self.unitWidth)
 
         # Back Button
         self.backButton = object_builder(QtWidgets.QPushButton(parent=self.centralwidget),
@@ -303,22 +303,22 @@ class Ui_AdvanceWindow(object):
 
         # Left Search Bar
         self.left_search: QtWidgets.QLineEdit = object_builder(QtWidgets.QLineEdit(parent=self.centralwidget), (
-            int(self.unitWidth * 0.5), int(self.unitHeight * 5), int(self.unitWidth * 15), int(self.unitHeight * 4)),
+            int(self.unitWidth * 0.5), int(self.unitHeight * 5), int(self.unitWidth * 20), int(self.unitHeight * 4)),
                                                                "Search", self.font_size + 5, False,
                                                                "QLineEdit{border:1px solid white; color: white}")
         self.left_search.textEdited.connect(self.leftSearchChanged)
 
         # Left List Viewer
         self.left_listViewer: QtWidgets.QListWidget = object_builder(QtWidgets.QListWidget(parent=self.centralwidget), (
-            int(self.unitWidth * 0.5), int(self.unitHeight * 10), int(self.unitWidth * 15),
+            int(self.unitWidth * 0.5), int(self.unitHeight * 10), int(self.unitWidth * 20),
             int((self.unitHeight * 100) - (self.unitHeight * 11))), None, self.font_size, False,
-                                                                     "QListWidget{border:1px solid white; alternate-background-color: #232323;background-color: black;};")
+                                                                     "QListWidget{border:1px solid white; alternate-background-color: #232323;background-color: black; padding: 2px;} QListWidget::item { margin-bottom: 6px; } QListWidget::item:selected { background-color: #630700; font-weight: bold; font-color:yellow; border: 1px solid blue;} QListWidget::item:hover{background-color: #360501;};")
         self.left_listViewer.setAlternatingRowColors(True)
         self.left_listViewer.itemSelectionChanged.connect(self.left_listViewer_selection_changed)
 
         # # Add Button
         self.addButton = object_builder(QtWidgets.QPushButton(parent=self.centralwidget), (
-            int(self.unitWidth * 16), int(self.unitHeight * 10), int(self.unitWidth * 6), int(self.unitHeight * 4)),
+            int(self.unitWidth * 21), int(self.unitHeight * 10), int(self.unitWidth * 6), int(self.unitHeight * 4)),
                                         "Add ->", self.font_size, True,
                                         "QPushButton{border:1px solid yellow} QPushButton::hover{border:1px solid green; color:green}",
                                         self.addButtonClicked, self.pointingHandMouse,
@@ -326,7 +326,7 @@ class Ui_AdvanceWindow(object):
 
         # Remove Button
         self.removeButton = object_builder(QtWidgets.QPushButton(parent=self.centralwidget), (
-            int(self.unitWidth * 16), int(self.unitHeight * 14.5), int(self.unitWidth * 6), int(self.unitHeight * 4)),
+            int(self.unitWidth * 21), int(self.unitHeight * 14.5), int(self.unitWidth * 6), int(self.unitHeight * 4)),
                                            "<- Remove", self.font_size, True,
                                            "QPushButton{border:1px solid yellow} QPushButton::hover{border:1px solid magenta; color: magenta}",
                                            self.removeButtonClicked, self.pointingHandMouse,
@@ -334,7 +334,7 @@ class Ui_AdvanceWindow(object):
         #
         # Clear All Button
         self.clearButton = object_builder(QtWidgets.QPushButton(parent=self.centralwidget), (
-            int(self.unitWidth * 16), int(self.unitHeight * 19), int(self.unitWidth * 6), int(self.unitHeight * 4)),
+            int(self.unitWidth * 21), int(self.unitHeight * 19), int(self.unitWidth * 6), int(self.unitHeight * 4)),
                                           "Clear -X", self.font_size, True,
                                           "QPushButton{border:1px solid yellow} QPushButton::hover{border:1px solid red; color:red}",
                                           self.clearButtonClicked, self.pointingHandMouse,
@@ -342,44 +342,44 @@ class Ui_AdvanceWindow(object):
 
         # Right Search Bar
         self.right_search: QtWidgets.QLineEdit = object_builder(QtWidgets.QLineEdit(parent=self.centralwidget), (
-            int(self.unitWidth * 22.5), int(self.unitHeight * 5), int(self.unitWidth * 15), int(self.unitHeight * 4)),
+            int(self.unitWidth * 27.5), int(self.unitHeight * 5), int(self.unitWidth * 20), int(self.unitHeight * 4)),
                                                                 "Search", self.font_size + 5, False,
                                                                 "QLineEdit{border:1px solid white; color: white}")
         self.right_search.textEdited.connect(self.rightSearchChanged)
 
         # Right List Viewer
         self.right_listViewer = object_builder(QtWidgets.QListWidget(parent=self.centralwidget), (
-            int(self.unitWidth * 22.5), int(self.unitHeight * 10), int(self.unitWidth * 15), int(self.unitHeight * 25)),
+            int(self.unitWidth * 27.5), int(self.unitHeight * 10), int(self.unitWidth * 20), int(self.unitHeight * 25)),
                                                None, self.font_size, False,
-                                               "QListWidget{border:1px solid white; alternate-background-color: #232323;background-color: black;};")
+                                               "QListWidget{border:1px solid white; alternate-background-color: #232323;background-color: black; padding: 2px;} QListWidget::item { margin-bottom: 6px; } QListWidget::item:selected { background-color: #630700; font-weight: bold; font-color:yellow; border: 1px solid blue;} QListWidget::item:hover{background-color: #360501;};")
         self.right_listViewer.setAlternatingRowColors(True)
         self.right_listViewer.itemSelectionChanged.connect(self.right_listViewer_selection_changed)
 
         # Details Viewer
         self.details_listViewer: QtWidgets.QListWidget = object_builder(
             QtWidgets.QListWidget(parent=self.centralwidget), (
-                int(self.unitWidth * 22.5), int(self.unitHeight * 36), int(self.unitWidth * 15),
+                int(self.unitWidth * 27.5), int(self.unitHeight * 36), int(self.unitWidth * 20),
                 int((self.unitHeight * 100) - (self.unitHeight * 37))), None, self.font_size, False,
             "QListWidget{border:1px solid white; color:white; alternate-background-color: #232323;background-color: black;};")
         self.details_listViewer.setAlternatingRowColors(True)
         self.setupSchedule()
 
         self.my_name = object_builder(QtWidgets.QPushButton(parent=self.centralwidget), (
-            int(self.unitWidth * 38), int((self.unitHeight * 100) - (self.unitHeight * 10)) + int(self.unitHeight * 5),
+            int(self.unitWidth * 48), int((self.unitHeight * 100) - (self.unitHeight * 10)) + int(self.unitHeight * 5),
             int(self.unitWidth * 15), int(self.unitHeight * 2)), "Created By: Shariar Islam Shuvo", self.font_size,
                                       False,
                                       "QPushButton::hover{color:red}", myNameClicked, self.pointingHandMouse,
                                       "Click to visit my Facebook Profile")
         self.github = object_builder(QtWidgets.QPushButton(parent=self.centralwidget), (
-            int(self.unitWidth * 55), int((self.unitHeight * 100) - (self.unitHeight * 10)) + int(self.unitHeight * 5),
+            int(self.unitWidth * 65), int((self.unitHeight * 100) - (self.unitHeight * 10)) + int(self.unitHeight * 5),
             int(self.unitWidth * 6), int(self.unitHeight * 2)), "GitHub", self.font_size, False,
                                      "QPushButton::hover{color:red}", githubClicked, self.pointingHandMouse,
                                      "Click to visit GitHub repo for this project")
 
     def setupSchedule(self):
         self.table = QtWidgets.QTableWidget(parent=self.centralwidget)
-        self.table.setGeometry(QtCore.QRect(int(self.unitWidth * 38), int(self.unitHeight * 5),
-                                            int((self.unitWidth * 100) - (self.unitWidth * 39)),
+        self.table.setGeometry(QtCore.QRect(int(self.unitWidth * 48), int(self.unitHeight * 5),
+                                            int((self.unitWidth * 90) - (self.unitWidth * 39)),
                                             int((self.unitHeight * 100) - (self.unitHeight * 10))))
         self.table.setRowCount(26)
         self.table.setColumnCount(7)
@@ -394,6 +394,7 @@ class Ui_AdvanceWindow(object):
                  '05:05 PM - \n06:00 PM', '06:00 PM - \n09:00 PM']
         self.table.setHorizontalHeaderLabels(days)
         self.table.setVerticalHeaderLabels(times)
+        self.table.setStyleSheet("color: black; font-weight: bold; alternate-background-color: #171717; gridline-color: gray; ")
         self.table.setAlternatingRowColors(True)
         for i in range(0, 26):
             self.table.hideRow(i)
@@ -401,6 +402,9 @@ class Ui_AdvanceWindow(object):
         self.table.setDisabled(True)
 
     def setupUi(self, AdvanceWindow, MainWindow, advance_ui, session):
+        icon_path = "./icon.png"  # Replace with the actual path to your icon file
+        icon = QIcon(icon_path)
+        AdvanceWindow.setWindowIcon(icon)
         self.session = session
         self.advance_ui = advance_ui
         self.AdvanceWindow = AdvanceWindow

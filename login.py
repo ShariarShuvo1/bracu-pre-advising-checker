@@ -1,4 +1,5 @@
 from PyQt6 import QtCore, QtWidgets
+from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QLineEdit, QPushButton, QLabel
 from bs4 import BeautifulSoup
 from ObjectBuilder import object_builder
@@ -19,23 +20,26 @@ class Ui_LoginWindow(object):
         self.centralwidget = None
 
     def setupUi(self, LoginWindow, MainWindow, main_ui):
+        icon_path = "./icon.png"  # Replace with the actual path to your icon file
+        icon = QIcon(icon_path)
+        LoginWindow.setWindowIcon(icon)
         self.LoginWindow = LoginWindow
         self.MainWindow = MainWindow
         self.main_ui = main_ui
         self.s = requests.Session()
         LoginWindow.setStyleSheet("background-color: black; color: yellow")
         LoginWindow.setWindowTitle("Sign In")
-        LoginWindow.setFixedSize(400, 200)
+        LoginWindow.setFixedSize(450, 220)
         self.centralwidget = QtWidgets.QWidget(parent=LoginWindow)
 
-        self.email = object_builder(QtWidgets.QLineEdit(parent=self.centralwidget), (20, 20, 350, 30), "USIS Email", 15,
-                                    True, "background-color: rgba(23, 23, 23, 1);")
+        self.email = object_builder(QtWidgets.QLineEdit(parent=self.centralwidget), (20, 20, 400, 40), "USIS Email (ex: iub.an.nasser@gmail.com)", 15,
+                                    True, "background-color: rgba(23, 23, 23, 1); border: 1px solid darkgray;")
 
-        self.password: QtWidgets.QLineEdit = object_builder(QtWidgets.QLineEdit(parent=self.centralwidget), (20, 70, 350, 30),
-                                       "USIS Password", 15, True, "background-color: rgba(23, 23, 23, 1);")
+        self.password: QtWidgets.QLineEdit = object_builder(QtWidgets.QLineEdit(parent=self.centralwidget), (20, 70, 400, 40),
+                                       "USIS Password", 15, True, "background-color: rgba(23, 23, 23, 1); border: 1px solid darkgray;")
         self.password.setEchoMode(QLineEdit.EchoMode.Password)
 
-        self.login = object_builder(QtWidgets.QPushButton(parent=self.centralwidget), (150, 120, 100, 40), "Login", 15,
+        self.login = object_builder(QtWidgets.QPushButton(parent=self.centralwidget), (175, 120, 100, 40), "Login", 15,
                                     True,
                                     "QPushButton::!hover{border: 2px solid yellow; background-color: rgba(0, 0, 0, 0);} QPushButton::hover{border : 2px solid red; background-color: rgba(0, 0, 0, 0);};",
                                     self.loginClicked)
