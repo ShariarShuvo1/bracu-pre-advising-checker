@@ -47,4 +47,23 @@ class Schedule:
         self.exam_end_time: str = exam_end_time
 
     def __str__(self) -> str:
-        return f""
+        return (f"Schedule(class_day_1={self.class_day_1}, "
+                f"class_day_1_start_time={self.class_day_1_start_time}, "
+                f"class_day_1_end_time={self.class_day_1_end_time}, "
+                f"class_day_1_room={self.class_day_1_room}, "
+                f"class_day_2={self.class_day_2}, "
+                f"class_day_2_start_time={self.class_day_2_start_time}, "
+                f"class_day_2_end_time={self.class_day_2_end_time}, "
+                f"class_day_2_room={self.class_day_2_room}, "
+                f"lab_day_1={self.lab_day_1}, "
+                f"lab_day_1_start_time={self.lab_day_1_start_time}, "
+                f"lab_day_1_end_time={self.lab_day_1_end_time}, "
+                f"lab_day_1_room={self.lab_day_1_room}, "
+                f"lab_day_2={self.lab_day_2}, "
+                f"lab_day_2_start_time={self.lab_day_2_start_time}, "
+                f"lab_day_2_end_time={self.lab_day_2_end_time}, "
+                f"lab_day_2_room={self.lab_day_2_room}, "
+                f"exam_date={self.exam_date}, "
+                f"exam_day={self.exam_day}, "
+                f"exam_start_time={self.exam_start_time}, "
+                f"exam_end_time={self.exam_end_time})")

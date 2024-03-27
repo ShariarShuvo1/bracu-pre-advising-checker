@@ -10,3 +10,9 @@ day_checker = {
 
 day_list = ["Saturday", "Sunday", "Monday",
             "Tuesday", "Wednesday", "Thursday", "Friday"]
+
+
+def get_short_day_name(day: str) -> str:
+    for short, full in day_checker.items():
+        if full == day:
+            return short

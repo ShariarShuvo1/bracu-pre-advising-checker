@@ -3,9 +3,10 @@ import sys
 import requests
 from PyQt6.QtCore import pyqtSignal
 from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QHBoxLayout
 
 from Components.FooterBar import FooterBar
+from Components.ListViewer import ListViewer
 from Dialogs.DataLoadingDialog import DataLoadingDialog
 from Dialogs.LoginStatusDialog import LoginStatusDialog
 from Entity.Course import Course
@@ -27,7 +28,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("BRACU Pre Advising Checker")
-        self.setMinimumSize(800, 600)
+        self.setMinimumSize(1280, 650)
         self.setWindowIcon(QIcon("./Assets/logo.png"))
         self.main_layout: QVBoxLayout = QVBoxLayout()
         self.main_layout.setContentsMargins(1, 1, 1, 0)
@@ -47,7 +48,15 @@ class MainWindow(QMainWindow):
 
         self.courses: list[Course] = []
 
+        self.left_list_viewer: ListViewer = ListViewer(self)
+
+        self.list_viewer_layout: QHBoxLayout = QHBoxLayout()
+        self.list_viewer_layout.addWidget(
+            self.left_list_viewer.list_viewer_widget)
+        self.list_viewer_layout.addStretch()
+
         self.main_layout.addWidget(self.login_bar.login_bar_widget)
+        self.main_layout.addLayout(self.list_viewer_layout)
         self.main_layout.addStretch()
         self.main_layout.addWidget(self.footer_bar.footer_bar_widget)
         self.is_already_logged_in.connect(self.already_logged_in)
@@ -55,6 +64,7 @@ class MainWindow(QMainWindow):
 
     def data_loaded_handler(self, courses: list[Course]):
         self.courses = courses
+        self.left_list_viewer.generate_course_cards()
 
     def logged_in(self, login: bool):
         if login:

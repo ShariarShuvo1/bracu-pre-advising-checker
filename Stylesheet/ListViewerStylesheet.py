@@ -1,18 +1,16 @@
-TITLE_LABEL_STYLE = """
-    QLabel {
-        font-size: 25px;
-        font-weight: bold;
-        border-top-left-radius: 5px;
-        border-top-right-radius: 5px;
-        background-color: #170040;
-        color: white;
+LIST_VIEWER_WIDGET_STYLE = """
+    QWidget {
+        background-color: white;
     }
 """
-COURSE_SEARCH_INPUT_STYLE = """
+
+SEARCH_BAR_STYLE = """
     QLineEdit {
+        background-color: white;
         border: 2px solid black;
         border-radius: 5px;
         padding: 5px;
+        font-size: 15px;
     }
     QLineEdit::hover {
         border: 2px solid #ff00ee;
@@ -21,9 +19,12 @@ COURSE_SEARCH_INPUT_STYLE = """
         border: 2px solid #d600c8;
     }
 """
+
 SCROLL_AREA_STYLE: str = """
     QScrollArea {
         background-color: white;
+        border: 2px solid black;
+        border-radius: 5px;
     }
     
     QScrollBar:vertical {

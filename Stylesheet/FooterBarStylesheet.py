@@ -16,6 +16,7 @@ PROFILE_BUTTON_STYLE = """
         font-size: 15px;
         border-radius: 5px;
         padding-right: 5px;
+        padding-left: 2px;
     }
     QPushButton:hover {
         background-color: #ff00ee;

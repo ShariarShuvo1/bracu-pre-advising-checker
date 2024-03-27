@@ -8,19 +8,19 @@ from Stylesheet.YourCourseCardStylesheet import *
 class YourCourseCard:
     def __init__(self, course: ProfileCourse):
         self.course: ProfileCourse = course
-        self.your_courses_card_widget: QWidget = QWidget()
-        self.your_courses_card_layout: QHBoxLayout = QHBoxLayout()
-        self.your_courses_card_layout.setContentsMargins(0, 0, 0, 0)
-        self.your_courses_card_layout.setSpacing(10)
-        self.your_courses_card_widget.setLayout(self.your_courses_card_layout)
+        self.your_course_card_widget: QWidget = QWidget()
+        self.your_course_card_layout: QHBoxLayout = QHBoxLayout()
+        self.your_course_card_layout.setContentsMargins(0, 0, 0, 0)
+        self.your_course_card_layout.setSpacing(10)
+        self.your_course_card_widget.setLayout(self.your_course_card_layout)
         if "F" in self.course.grade:
-            self.your_courses_card_widget.setStyleSheet(
+            self.your_course_card_widget.setStyleSheet(
                 YOUR_COURSE_CARD_FAIL_STYLE)
         elif "Pending" in self.course.grade:
-            self.your_courses_card_widget.setStyleSheet(
+            self.your_course_card_widget.setStyleSheet(
                 YOUR_COURSE_CARD_PENDING_STYLE)
         else:
-            self.your_courses_card_widget.setStyleSheet(YOUR_COURSE_CARD_STYLE)
+            self.your_course_card_widget.setStyleSheet(YOUR_COURSE_CARD_STYLE)
 
         self.course_code: QLabel = QLabel(self.course.course_code)
         self.course_code.setStyleSheet(COURSE_CODE_STYLE)
@@ -50,10 +50,10 @@ class YourCourseCard:
         self.grade_point.setFixedWidth(120)
         self.grade_point.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.your_courses_card_layout.addWidget(self.course_code)
-        self.your_courses_card_layout.addWidget(self.course_name)
-        self.your_courses_card_layout.addStretch()
-        self.your_courses_card_layout.addWidget(self.course_credit)
-        self.your_courses_card_layout.addWidget(self.credit_earned)
-        self.your_courses_card_layout.addWidget(self.grade)
-        self.your_courses_card_layout.addWidget(self.grade_point)
+        self.your_course_card_layout.addWidget(self.course_code)
+        self.your_course_card_layout.addWidget(self.course_name)
+        self.your_course_card_layout.addStretch()
+        self.your_course_card_layout.addWidget(self.course_credit)
+        self.your_course_card_layout.addWidget(self.credit_earned)
+        self.your_course_card_layout.addWidget(self.grade)
+        self.your_course_card_layout.addWidget(self.grade_point)

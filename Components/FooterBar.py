@@ -28,7 +28,7 @@ class FooterBar:
         self.profile_button.setStyleSheet(PROFILE_BUTTON_STYLE)
         self.profile_button.setIcon(QIcon("./Assets/Icons/profile-white.png"))
         self.profile_button.setText("Loading...")
-        self.profile_button.setIconSize(QSize(30, 30))
+        self.profile_button.setIconSize(QSize(28, 28))
         self.profile_button.setCursor(Qt.CursorShape.PointingHandCursor)
         self.profile_button.setToolTip("View your profile")
         self.profile_button.setMaximumHeight(40)

@@ -96,7 +96,7 @@ class YourCourses:
             course_card = YourCourseCard(course)
             self.course_card.append(course_card)
             self.scroll_area_layout.insertWidget(
-                0, course_card.your_courses_card_widget)
+                0, course_card.your_course_card_widget)
         self.scroll_area_layout.addStretch()
 
         self.scroll_area.setWidget(self.scroll_area_widget)
@@ -117,11 +117,11 @@ class YourCourses:
 
     def search_course(self):
         for course in self.course_card:
-            course.your_courses_card_widget.hide()
+            course.your_course_card_widget.hide()
             if (self.course_search_input.text().lower() in course.course.course_code.lower() or
                     self.course_search_input.text().lower() in course.course.course_name.lower() or
                     self.course_search_input.text().lower() in course.course.grade.lower() or
                     self.course_search_input.text().lower() in str(course.course.course_credit) or
                     self.course_search_input.text().lower() in str(course.course.credit_earned) or
                     self.course_search_input.text().lower() in str(course.course.grade_point)):
-                course.your_courses_card_widget.show()
+                course.your_course_card_widget.show()
