@@ -6,7 +6,9 @@ from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget
 
 from Components.FooterBar import FooterBar
+from Dialogs.DataLoadingDialog import DataLoadingDialog
 from Dialogs.LoginStatusDialog import LoginStatusDialog
+from Entity.Course import Course
 from Entity.Profile import Profile
 from Settings.SettingsData import get_setting
 from Stylesheet.MainWindowStylesheet import *
@@ -15,10 +17,12 @@ from Components.LoginBar import LoginBar
 
 class MainWindow(QMainWindow):
     is_already_logged_in: pyqtSignal = pyqtSignal()
+    data_loaded: pyqtSignal = pyqtSignal(list)
 
-    def already_logged_in(self):
-        if get_setting("IS_LOGGED_IN_INFO_SAVED"):
+    def already_logged_in(self, later_call: bool = False):
+        if get_setting("IS_LOGGED_IN_INFO_SAVED") and not later_call:
             LoginStatusDialog(self)
+        DataLoadingDialog(self)
 
     def __init__(self):
         super().__init__()
@@ -35,15 +39,22 @@ class MainWindow(QMainWindow):
         self.session: requests.sessions = requests.Session()
         self.profile: Profile | None = None
         self.current_session_id: str = "627123"
+        self.working_session_id: str = "627123"
 
         self.login_bar: LoginBar = LoginBar(self)
 
         self.footer_bar: FooterBar = FooterBar(self)
 
+        self.courses: list[Course] = []
+
         self.main_layout.addWidget(self.login_bar.login_bar_widget)
         self.main_layout.addStretch()
         self.main_layout.addWidget(self.footer_bar.footer_bar_widget)
         self.is_already_logged_in.connect(self.already_logged_in)
+        self.data_loaded.connect(self.data_loaded_handler)
+
+    def data_loaded_handler(self, courses: list[Course]):
+        self.courses = courses
 
     def logged_in(self, login: bool):
         if login:
@@ -63,7 +74,7 @@ if __name__ == "__main__":
     app: QApplication = QApplication(sys.argv)
     window: MainWindow = MainWindow()
     window.setStyleSheet(MAIN_WINDOW_STYLE)
-    window.showMaximized()
+    # window.showMaximized()
     window.show()
     window.is_already_logged_in.emit()
     sys.exit(app.exec())

@@ -1,0 +1,50 @@
+from datetime import datetime
+
+
+class Schedule:
+    def __init__(
+            self,
+            class_day_1: str | None = None,
+            class_day_1_start_time: str | None = None,
+            class_day_1_end_time: str | None = None,
+            class_day_1_room: str | None = None,
+            class_day_2: str | None = None,
+            class_day_2_start_time: str | None = None,
+            class_day_2_end_time: str | None = None,
+            class_day_2_room: str | None = None,
+            lab_day_1: str | None = None,
+            lab_day_1_start_time: str | None = None,
+            lab_day_1_end_time: str | None = None,
+            lab_day_1_room: str | None = None,
+            lab_day_2: str | None = None,
+            lab_day_2_start_time: str | None = None,
+            lab_day_2_end_time: str | None = None,
+            lab_day_2_room: str | None = None,
+            exam_date: str | None = None,
+            exam_day: str | None = None,
+            exam_start_time: str | None = None,
+            exam_end_time: str | None = None,
+    ):
+        self.class_day_1: str = class_day_1
+        self.class_day_1_start_time: str = class_day_1_start_time
+        self.class_day_1_end_time: str = class_day_1_end_time
+        self.class_day_1_room: str = class_day_1_room
+        self.class_day_2: str = class_day_2
+        self.class_day_2_start_time: str = class_day_2_start_time
+        self.class_day_2_end_time: str = class_day_2_end_time
+        self.class_day_2_room: str = class_day_2_room
+        self.lab_day_1: str = lab_day_1
+        self.lab_day_1_start_time: str = lab_day_1_start_time
+        self.lab_day_1_end_time: str = lab_day_1_end_time
+        self.lab_day_1_room: str = lab_day_1_room
+        self.lab_day_2: str = lab_day_2
+        self.lab_day_2_start_time: str = lab_day_2_start_time
+        self.lab_day_2_end_time: str = lab_day_2_end_time
+        self.lab_day_2_room: str = lab_day_2_room
+        self.exam_date: str = exam_date
+        self.exam_day: str = exam_day
+        self.exam_start_time: str = exam_start_time
+        self.exam_end_time: str = exam_end_time
+
+    def __str__(self) -> str:
+        return f""

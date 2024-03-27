@@ -68,7 +68,8 @@ class LoginDialog(QDialog):
         self.info_button.clicked.connect(security_info)
 
         self.login_button: QPushButton = QPushButton("Login")
-        self.login_button.setToolTip("Click here to login to your USIS account")
+        self.login_button.setToolTip(
+            "Click here to login to your USIS account")
         self.login_button.setFixedHeight(40)
         self.login_button.setStyleSheet(LOGIN_BUTTON_STYLE)
         self.login_button.setCursor(Qt.CursorShape.PointingHandCursor)
@@ -136,7 +137,8 @@ class LoginDialog(QDialog):
         self.disable_all()
 
         self.login_thread = LoginThread(self.main, email, password)
-        self.login_thread.status_update.connect(self.login_thread_status_update)
+        self.login_thread.status_update.connect(
+            self.login_thread_status_update)
         self.login_thread.start()
 
     def enable_all(self):
@@ -166,11 +168,14 @@ class LoginDialog(QDialog):
             msg_box.setIcon(QMessageBox.Icon.Critical)
             msg_box.setText(status)
             if status == "No internet connection":
-                msg_box.setInformativeText("Please check your internet connection and try again")
+                msg_box.setInformativeText(
+                    "Please check your internet connection and try again")
             elif status == "USIS connection failed":
-                msg_box.setInformativeText("USIS is down right now. Use offline mode or try again later")
+                msg_box.setInformativeText(
+                    "USIS is down right now. Use offline mode or try again later")
             elif status == "Login failed. Invalid email or password":
-                msg_box.setInformativeText("Please check your email and password and try again")
+                msg_box.setInformativeText(
+                    "Please check your email and password and try again")
                 self.email_input.setStyleSheet(EMAIL_INPUT_ERROR_STYLE)
                 self.password_input.setStyleSheet(EMAIL_INPUT_ERROR_STYLE)
             msg_box.setWindowIcon(QIcon("./Assets/logo.png"))
@@ -193,6 +198,7 @@ class LoginDialog(QDialog):
             set_setting("EMAIL", "")
             set_setting("PASSWORD", "")
         self.main.logged_in(True)
+        self.main.is_already_logged_in.emit()
         self.close()
 
     def email_validation(self, email):
@@ -207,7 +213,8 @@ class LoginDialog(QDialog):
             self.email_input.setStyleSheet(EMAIL_INPUT_ERROR_STYLE)
             return False
         elif email.split("@")[1] == "g.bracu.ac.bd":
-            self.status_label.setText("Your Gsuit email is not your USIS email")
+            self.status_label.setText(
+                "Your Gsuit email is not your USIS email")
             self.status_label.setStyleSheet(STATUS_LABEL_ERROR_STYLE)
             self.email_input.setStyleSheet(EMAIL_INPUT_ERROR_STYLE)
             return False

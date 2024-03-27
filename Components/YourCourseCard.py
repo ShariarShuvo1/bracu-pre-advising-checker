@@ -14,9 +14,11 @@ class YourCourseCard:
         self.your_courses_card_layout.setSpacing(10)
         self.your_courses_card_widget.setLayout(self.your_courses_card_layout)
         if "F" in self.course.grade:
-            self.your_courses_card_widget.setStyleSheet(YOUR_COURSE_CARD_FAIL_STYLE)
+            self.your_courses_card_widget.setStyleSheet(
+                YOUR_COURSE_CARD_FAIL_STYLE)
         elif "Pending" in self.course.grade:
-            self.your_courses_card_widget.setStyleSheet(YOUR_COURSE_CARD_PENDING_STYLE)
+            self.your_courses_card_widget.setStyleSheet(
+                YOUR_COURSE_CARD_PENDING_STYLE)
         else:
             self.your_courses_card_widget.setStyleSheet(YOUR_COURSE_CARD_STYLE)
 

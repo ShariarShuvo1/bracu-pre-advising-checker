@@ -72,10 +72,12 @@ class YourCourses:
         self.grade_point.setFixedWidth(120)
         self.grade_point.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.total_credit_earned_label: QLabel = QLabel(f"Total Credit Earned: {str(self.profile.total_credit())}")
+        self.total_credit_earned_label: QLabel = QLabel(
+            f"Total Credit Earned: {str(self.profile.total_credit())}")
         self.total_credit_earned_label.setStyleSheet(COURSE_NAME_SMALL_STYLE)
 
-        self.total_grade_point_label: QLabel = QLabel(f"CGPA: {self.profile.total_grade_point()}")
+        self.total_grade_point_label: QLabel = QLabel(
+            f"CGPA: {self.profile.total_grade_point()}")
         self.total_grade_point_label.setStyleSheet(COURSE_NAME_SMALL_STYLE)
 
         self.top_bar: QHBoxLayout = QHBoxLayout()
@@ -93,7 +95,8 @@ class YourCourses:
         for course in self.profile.courses:
             course_card = YourCourseCard(course)
             self.course_card.append(course_card)
-            self.scroll_area_layout.insertWidget(0, course_card.your_courses_card_widget)
+            self.scroll_area_layout.insertWidget(
+                0, course_card.your_courses_card_widget)
         self.scroll_area_layout.addStretch()
 
         self.scroll_area.setWidget(self.scroll_area_widget)
@@ -111,7 +114,6 @@ class YourCourses:
         self.bottom_bar.addWidget(self.total_grade_point_label)
         self.bottom_bar.addStretch()
         self.your_courses_layout.addLayout(self.bottom_bar)
-
 
     def search_course(self):
         for course in self.course_card:

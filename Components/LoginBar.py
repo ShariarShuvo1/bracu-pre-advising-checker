@@ -20,7 +20,8 @@ class LoginBar:
         self.login_button: LoginPushButton = LoginPushButton(self.main)
         self.login_button.clicked.connect(self.login_button_clicked)
 
-        self.login_bar_message: QLabel = QLabel("Please login to your USIS account to access all features")
+        self.login_bar_message: QLabel = QLabel(
+            "Please login to your USIS account to access all features")
         self.login_bar_message.setStyleSheet(LOGIN_BAR_MESSAGE_STYLE)
 
         self.close_button: QPushButton = QPushButton()
