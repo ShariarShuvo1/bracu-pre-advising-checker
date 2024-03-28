@@ -69,9 +69,9 @@ class DataLoadingDialog(QDialog):
         self.main_layout.addSpacing(10)
 
         self.data_parse_thread: DataParseThread | None = None
-        # self.parse_begun()
-        # self.exec()
-        self.load_previous_data()
+        self.parse_begun()
+        self.exec()
+        # self.load_previous_data()
 
     def parse_begun(self):
         self.load_previous_data_button.hide()
@@ -116,17 +116,23 @@ class DataLoadingDialog(QDialog):
             msg_box.setDefaultButton(QMessageBox.StandardButton.Ok)
             msg_box.exec()
 
+    def body_generator(self, courses: list[Course]):
+        self.main.left_list_viewer.list_viewer_widget.hide()
+        self.main.courses = courses
+        self.main.left_list_viewer.generate_course_cards()
+        self.main.left_list_viewer.list_viewer_widget.show()
+
     def load_previous_data(self):
         if self.data_parse_thread:
             self.data_parse_thread.terminate()
         data: list[Course] = get_backup_course_data()
-        self.main.data_loaded.emit(data)
+        self.body_generator(data)
         self.close()
 
     def data_found(self, data):
         if len(data) > 0:
             set_backup_course_data(data)
-            self.main.data_loaded.emit(data)
+            self.body_generator(data)
             self.close()
         else:
             if course_data_contains():

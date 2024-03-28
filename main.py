@@ -18,7 +18,6 @@ from Components.LoginBar import LoginBar
 
 class MainWindow(QMainWindow):
     is_already_logged_in: pyqtSignal = pyqtSignal()
-    data_loaded: pyqtSignal = pyqtSignal(list)
 
     def already_logged_in(self, later_call: bool = False):
         if get_setting("IS_LOGGED_IN_INFO_SAVED") and not later_call:
@@ -60,11 +59,6 @@ class MainWindow(QMainWindow):
         self.main_layout.addStretch()
         self.main_layout.addWidget(self.footer_bar.footer_bar_widget)
         self.is_already_logged_in.connect(self.already_logged_in)
-        self.data_loaded.connect(self.data_loaded_handler)
-
-    def data_loaded_handler(self, courses: list[Course]):
-        self.courses = courses
-        self.left_list_viewer.generate_course_cards()
 
     def logged_in(self, login: bool):
         if login:

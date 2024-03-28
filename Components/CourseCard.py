@@ -22,21 +22,24 @@ def get_date_tooltip(course: Course) -> str:
 
     if course.schedule.lab_day_1:
         if course.schedule.class_day_1:
+            room = f"[{course.schedule.lab_day_1_room}]" if course.schedule.lab_day_1_room else ""
             tooltip += (f"\n\nLab Day 1: {course.schedule.lab_day_1} "
                         f"({course.schedule.lab_day_1_start_time} - "
                         f"{course.schedule.lab_day_1_end_time}) "
-                        f"[{course.schedule.lab_day_1_room}]")
+                        f"{room}")
         else:
+            room = f"[{course.schedule.lab_day_1_room}]" if course.schedule.lab_day_1_room else ""
             tooltip += (f"Lab Day 1: {course.schedule.lab_day_1} "
                         f"({course.schedule.lab_day_1_start_time} - "
                         f"{course.schedule.lab_day_1_end_time}) "
-                        f"[{course.schedule.lab_day_1_room}]")
+                        f"{room}")
 
     if course.schedule.lab_day_2:
+        room = f"[{course.schedule.lab_day_2_room}]" if course.schedule.lab_day_2_room else ""
         tooltip += (f"\nLab Day 2: {course.schedule.lab_day_2} "
                     f"({course.schedule.lab_day_2_start_time} - "
                     f"{course.schedule.lab_day_2_end_time}) "
-                    f"[{course.schedule.lab_day_2_room}]")
+                    f"{room}")
 
     if course.schedule.exam_day:
         tooltip += f"\n\nExam Day: {course.schedule.exam_day}"
@@ -77,8 +80,6 @@ class CourseCard:
         self.course_code_label.setStyleSheet(NOT_BOLD_LABEL_STYLE)
         self.course_code_label.setFixedWidth(70)
         self.course_code_label.setToolTip(self.course.course_title)
-        if "close" in self.course.course_code.lower():
-            self.course_code_label.setStyleSheet(STRICKEN_LABEL_STYLE)
         self.course_code_label.setAlignment(Qt.AlignmentFlag.AlignLeft)
 
         self.instructor_initial_label: QLabel = QLabel(
@@ -129,6 +130,19 @@ class CourseCard:
         self.date_label.setToolTip(get_date_tooltip(self.course))
         self.date_label.setWordWrap(True)
         self.date_label.setAlignment(Qt.AlignmentFlag.AlignLeft)
+
+        if "close" in self.course.section.lower():
+            self.section_label.setStyleSheet(STRICKEN_LABEL_STYLE)
+            self.course_code_label.setStyleSheet(STRICKEN_LABEL_STYLE)
+            self.instructor_initial_label.setStyleSheet(STRICKEN_LABEL_STYLE)
+            self.available_seats_label.setStyleSheet(STRICKEN_LABEL_STYLE)
+            self.date_label.setStyleSheet(STRICKEN_LABEL_STYLE)
+            self.section_label.setToolTip(f"{self.section_label.toolTip()}\n(This Section is Closed)")
+            self.course_code_label.setToolTip(f"{self.course_code_label.toolTip()}\n(This Section is Closed)")
+            self.instructor_initial_label.setToolTip(f"{self.instructor_initial_label.toolTip()}\n"
+                                                     f"(This Section is Closed)")
+            self.available_seats_label.setToolTip(f"{self.available_seats_label.toolTip()}\n(This Section is Closed)")
+            self.date_label.setToolTip(f"{self.date_label.toolTip()}\n(This Section is Closed)")
 
         self.course_card_layout.addWidget(self.section_label)
         self.course_card_layout.addWidget(self.course_code_label)
