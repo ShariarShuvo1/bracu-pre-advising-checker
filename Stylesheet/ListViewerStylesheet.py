@@ -37,6 +37,8 @@ SCROLL_AREA_STYLE: str = """
     QScrollBar::handle:vertical {
         background-color: #9a00bd;
         min-height: 20px;
+        border-radius: 5px;
+        width: 5px;
     }
     
     QScrollBar::add-line:vertical {

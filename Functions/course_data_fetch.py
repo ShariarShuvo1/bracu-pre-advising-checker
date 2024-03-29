@@ -518,8 +518,10 @@ def combine_exam_map_with_class_schedule_map(
                 lab_day_2_string = count_of_lab_day[lab_day_2]
                 lab_day_1_string = lab_day_1_string.split("-")
                 lab_day_2_string = lab_day_2_string.split("-")
-                lab_day_1_start_time, lab_day_1_end_time = lab_day_1_string[0].strip(), lab_day_1_string[1].strip()
-                lab_day_2_start_time, lab_day_2_end_time = lab_day_2_string[0].strip(), lab_day_2_string[1].strip()
+                lab_day_1_start_time, lab_day_1_end_time = lab_day_1_string[0].strip(
+                ), lab_day_1_string[1].strip()
+                lab_day_2_start_time, lab_day_2_end_time = lab_day_2_string[0].strip(
+                ), lab_day_2_string[1].strip()
         if lab_day_1 and lab_day_2:
             if day_list.index(lab_day_1) > day_list.index(lab_day_2):
                 lab_day_1, lab_day_2 = lab_day_2, lab_day_1
@@ -579,29 +581,34 @@ def get_courses_user(main, signal) -> list[Course]:
     session = main.session
 
     seats_data = get_usis_json_data(session, f"https://usis.bracu.ac.bd/academia/"
-                                             f"studentCourse/showCourseStatusList?query"
-                                             f"=&academiaSession={main.working_session_id}"
-                                             f"&_search=false&nd=1711516270344&rows=-1&page="
-                                             f"1&sidx=id&sord=desc", signal, "available courses")
+                                    f"studentCourse/showCourseStatusList?query"
+                                    f"=&academiaSession={
+                                        main.working_session_id}"
+                                    f"&_search=false&nd=1711516270344&rows=-1&page="
+                                    f"1&sidx=id&sord=desc", signal, "available courses")
     if seats_data is None:
         return course_list
     signal.emit("Converting available courses to HashMap")
-    seats_map: Dict[Tuple[str, str], Dict[str, Union[str, float, int]]] = convert_seats_data_map(seats_data)
+    seats_map: Dict[Tuple[str, str], Dict[str, Union[str,
+                                                     float, int]]] = convert_seats_data_map(seats_data)
     exam_data = get_usis_json_data(session, f"https://usis.bracu.ac.bd/academia/ac"
-                                            f"ademicSection/listAcademicSectionWithSche"
-                                            f"dule?academiaSession={main.working_session_id}"
-                                            f"&_search=false&nd=1711519391647&rows=-1&page=1&"
-                                            f"sidx=course_code&sord=asc", signal, "exam dates")
+                                   f"ademicSection/listAcademicSectionWithSche"
+                                   f"dule?academiaSession={
+                                       main.working_session_id}"
+                                   f"&_search=false&nd=1711519391647&rows=-1&page=1&"
+                                   f"sidx=course_code&sord=asc", signal, "exam dates")
     if exam_data is None:
         return course_list
     signal.emit("Mapping exam data to HashMap")
-    exam_map: Dict[Tuple[str, str, int], Dict[str, Union[str, None]]] = convert_exam_data_map(exam_data)
+    exam_map: Dict[Tuple[str, str, int], Dict[str,
+                                              Union[str, None]]] = convert_exam_data_map(exam_data)
 
     class_schedule_data = get_usis_json_data(session, f"https://usis.bracu.ac.bd/academia/student"
-                                                      f"Course/showClassScheduleInTabularFormatInGrid?"
-                                                      f"query=&academiaSession={main.working_session_id}"
-                                                      f"&_search=false&nd=1711567882232&rows=-1&page=1&si"
-                                                      f"dx=course_code&sord=asc", signal, "class schedules")
+                                             f"Course/showClassScheduleInTabularFormatInGrid?"
+                                             f"query=&academiaSession={
+                                                 main.working_session_id}"
+                                             f"&_search=false&nd=1711567882232&rows=-1&page=1&si"
+                                             f"dx=course_code&sord=asc", signal, "class schedules")
     if class_schedule_data is None:
         return course_list
     signal.emit("Mapping class schedule data to HashMap")
@@ -609,7 +616,8 @@ def get_courses_user(main, signal) -> list[Course]:
         convert_class_schedule_data_map(class_schedule_data))
 
     signal.emit("Combining exam data with class schedule data")
-    schedule_map = combine_exam_map_with_class_schedule_map(exam_map, class_schedule_map)
+    schedule_map = combine_exam_map_with_class_schedule_map(
+        exam_map, class_schedule_map)
 
     total_courses = len(seats_map)
     for idx, (course_code, section) in enumerate(seats_map.keys()):
@@ -629,11 +637,13 @@ def get_courses_user(main, signal) -> list[Course]:
                 f"[{idx + 1}/{total_courses}] Getting Schedule Data for {course_code} Section[{section}]")
             schedule_data = schedule_map.get((course_code, section), {})
             class_day_1 = schedule_data.get("class_day_1")
-            class_day_1_start_time = schedule_data.get("class_day_1_start_time")
+            class_day_1_start_time = schedule_data.get(
+                "class_day_1_start_time")
             class_day_1_end_time = schedule_data.get("class_day_1_end_time")
             class_day_1_room = schedule_data.get("class_day_1_room")
             class_day_2 = schedule_data.get("class_day_2")
-            class_day_2_start_time = schedule_data.get("class_day_2_start_time")
+            class_day_2_start_time = schedule_data.get(
+                "class_day_2_start_time")
             class_day_2_end_time = schedule_data.get("class_day_2_end_time")
             class_day_2_room = schedule_data.get("class_day_2_room")
             lab_day_1 = schedule_data.get("lab_day_1")

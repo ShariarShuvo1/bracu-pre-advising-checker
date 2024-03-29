@@ -2,6 +2,7 @@ from PyQt6.QtCore import Qt, QMutexLocker, QMutex
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLineEdit, QScrollArea, QApplication
 
 from Components.CourseCard import CourseCard
+from Entity.Course import Course
 from Stylesheet.ListViewerStylesheet import *
 from Threads.SearchThread import SearchThread
 
@@ -16,18 +17,18 @@ def process_search_results(success, results):
 
 
 class ListViewer:
-    def __init__(self, main):
+    def __init__(self, main, right=False):
         self.thread: SearchThread | None = None
         self.search_in_progress = False
         self.search_mutex = QMutex()
         self.main = main
+        self.right = right
         self.list_viewer_widget: QWidget = QWidget()
         self.list_viewer_layout: QVBoxLayout = QVBoxLayout()
-        self.list_viewer_layout.setContentsMargins(5, 0, 0, 0)
+        self.list_viewer_layout.setContentsMargins(5, 0, 5, 0)
         self.list_viewer_layout.setSpacing(3)
         self.list_viewer_widget.setLayout(self.list_viewer_layout)
         self.list_viewer_widget.setFixedWidth(315)
-        self.list_viewer_widget.setMinimumHeight(600)
         self.list_viewer_widget.setStyleSheet(LIST_VIEWER_WIDGET_STYLE)
 
         self.course_card_list: list[CourseCard] = []
@@ -80,6 +81,41 @@ class ListViewer:
             card.course_card_widget.deleteLater()
 
         for course in self.main.courses:
-            self.course_card_list.append(CourseCard(course))
+            self.course_card_list.append(CourseCard(course, self.main))
             self.scroll_area_layout.insertWidget(
                 self.scroll_area_layout.count() - 1, self.course_card_list[-1].course_card_widget)
+
+    def is_duplicate(self, course: Course) -> bool:
+        for card in self.course_card_list:
+            if card.course == course:
+                return True
+        return False
+
+    def validator(self, course: Course) -> bool:
+        return not self.is_duplicate(course)
+
+    def add_course(self, course: Course | None):
+        if course:
+            if self.validator(course):
+                if self.right:
+                    self.course_card_list.append(
+                        CourseCard(course, self.main, True))
+                else:
+                    self.course_card_list.append(CourseCard(course, self.main))
+                self.scroll_area_layout.insertWidget(
+                    self.scroll_area_layout.count() - 1, self.course_card_list[-1].course_card_widget)
+
+    def remove_course(self, course: Course | None):
+        if course:
+            for card in self.course_card_list:
+                if card.course == course:
+                    card.course_card_widget.deleteLater()
+                    self.course_card_list.remove(card)
+                    break
+
+    def clear_courses(self):
+        for card in self.course_card_list:
+            card.course_card_widget.deleteLater()
+        self.course_card_list.clear()
+        self.search_bar.clear()
+        self.search()

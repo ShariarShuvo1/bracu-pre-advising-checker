@@ -22,20 +22,23 @@ def get_date_tooltip(course: Course) -> str:
 
     if course.schedule.lab_day_1:
         if course.schedule.class_day_1:
-            room = f"[{course.schedule.lab_day_1_room}]" if course.schedule.lab_day_1_room else ""
+            room = f"[{
+                course.schedule.lab_day_1_room}]" if course.schedule.lab_day_1_room else ""
             tooltip += (f"\n\nLab Day 1: {course.schedule.lab_day_1} "
                         f"({course.schedule.lab_day_1_start_time} - "
                         f"{course.schedule.lab_day_1_end_time}) "
                         f"{room}")
         else:
-            room = f"[{course.schedule.lab_day_1_room}]" if course.schedule.lab_day_1_room else ""
+            room = f"[{
+                course.schedule.lab_day_1_room}]" if course.schedule.lab_day_1_room else ""
             tooltip += (f"Lab Day 1: {course.schedule.lab_day_1} "
                         f"({course.schedule.lab_day_1_start_time} - "
                         f"{course.schedule.lab_day_1_end_time}) "
                         f"{room}")
 
     if course.schedule.lab_day_2:
-        room = f"[{course.schedule.lab_day_2_room}]" if course.schedule.lab_day_2_room else ""
+        room = f"[{
+            course.schedule.lab_day_2_room}]" if course.schedule.lab_day_2_room else ""
         tooltip += (f"\nLab Day 2: {course.schedule.lab_day_2} "
                     f"({course.schedule.lab_day_2_start_time} - "
                     f"{course.schedule.lab_day_2_end_time}) "
@@ -51,7 +54,9 @@ def get_date_tooltip(course: Course) -> str:
 
 
 class CourseCard:
-    def __init__(self, course: Course):
+    def __init__(self, course: Course, main, right=False):
+        self.main = main
+        self.right = right
         self.course: Course = course
         self.course_card_widget: QWidget = QWidget()
         self.course_card_layout: QHBoxLayout = QHBoxLayout()
@@ -137,12 +142,16 @@ class CourseCard:
             self.instructor_initial_label.setStyleSheet(STRICKEN_LABEL_STYLE)
             self.available_seats_label.setStyleSheet(STRICKEN_LABEL_STYLE)
             self.date_label.setStyleSheet(STRICKEN_LABEL_STYLE)
-            self.section_label.setToolTip(f"{self.section_label.toolTip()}\n(This Section is Closed)")
-            self.course_code_label.setToolTip(f"{self.course_code_label.toolTip()}\n(This Section is Closed)")
+            self.section_label.setToolTip(
+                f"{self.section_label.toolTip()}\n(This Section is Closed)")
+            self.course_code_label.setToolTip(
+                f"{self.course_code_label.toolTip()}\n(This Section is Closed)")
             self.instructor_initial_label.setToolTip(f"{self.instructor_initial_label.toolTip()}\n"
                                                      f"(This Section is Closed)")
-            self.available_seats_label.setToolTip(f"{self.available_seats_label.toolTip()}\n(This Section is Closed)")
-            self.date_label.setToolTip(f"{self.date_label.toolTip()}\n(This Section is Closed)")
+            self.available_seats_label.setToolTip(
+                f"{self.available_seats_label.toolTip()}\n(This Section is Closed)")
+            self.date_label.setToolTip(
+                f"{self.date_label.toolTip()}\n(This Section is Closed)")
 
         self.course_card_layout.addWidget(self.section_label)
         self.course_card_layout.addWidget(self.course_code_label)
@@ -153,6 +162,12 @@ class CourseCard:
 
     def focus_in_event(self, event):
         self.course_card_widget.setStyleSheet(COURSE_CARD_CLICKED_STYLE)
+        if self.right:
+            self.main.card_clicked.emit([None])
+            self.main.card_clicked_to_remove.emit([self.course])
+        else:
+            self.main.card_clicked_to_remove.emit([None])
+            self.main.card_clicked.emit([self.course])
         event.accept()
 
     def focus_out_event(self, event):

@@ -159,7 +159,8 @@ class SearchThread(QThread):
                             ((datetime.strptime(card.course.schedule.lab_day_1_start_time, "%I:%M %p") >= datetime.strptime(terms["l1sr"], "%I:%M %p") if card.course.schedule.lab_day_1_start_time else False) if terms.get("l1sr") else True) and
                             ((datetime.strptime(card.course.schedule.lab_day_1_end_time, "%I:%M %p") <= datetime.strptime(terms["l1er"], "%I:%M %p") if card.course.schedule.lab_day_1_end_time else False) if terms.get("l1er") else True) and
                             ((datetime.strptime(card.course.schedule.lab_day_2_start_time, "%I:%M %p") >= datetime.strptime(terms["l2sr"], "%I:%M %p") if card.course.schedule.lab_day_2_start_time else False) if terms.get("l2sr") else True) and
-                            ((datetime.strptime(card.course.schedule.lab_day_2_end_time, "%I:%M %p") <= datetime.strptime(terms["l2er"], "%I:%M %p") if card.course.schedule.lab_day_2_end_time else False) if terms.get("l2er") else True)
+                            ((datetime.strptime(card.course.schedule.lab_day_2_end_time, "%I:%M %p") <= datetime.strptime(
+                                terms["l2er"], "%I:%M %p") if card.course.schedule.lab_day_2_end_time else False) if terms.get("l2er") else True)
                     ):
                         results.append((card, True))
                     else:
@@ -205,7 +206,8 @@ class SearchThread(QThread):
                             ((datetime.strptime(card.course.schedule.lab_day_1_start_time, "%I:%M %p") >= datetime.strptime(terms["l1sr"], "%I:%M %p") if card.course.schedule.lab_day_1_start_time else False) if terms.get("l1sr") else False) or
                             ((datetime.strptime(card.course.schedule.lab_day_1_end_time, "%I:%M %p") <= datetime.strptime(terms["l1er"], "%I:%M %p") if card.course.schedule.lab_day_1_end_time else False) if terms.get("l1er") else False) or
                             ((datetime.strptime(card.course.schedule.lab_day_2_start_time, "%I:%M %p") >= datetime.strptime(terms["l2sr"], "%I:%M %p") if card.course.schedule.lab_day_2_start_time else False) if terms.get("l2sr") else False) or
-                            ((datetime.strptime(card.course.schedule.lab_day_2_end_time, "%I:%M %p") <= datetime.strptime(terms["l2er"], "%I:%M %p") if card.course.schedule.lab_day_2_end_time else False) if terms.get("l2er") else False)
+                            ((datetime.strptime(card.course.schedule.lab_day_2_end_time, "%I:%M %p") <= datetime.strptime(
+                                terms["l2er"], "%I:%M %p") if card.course.schedule.lab_day_2_end_time else False) if terms.get("l2er") else False)
                     ):
                         results.append((card, True))
                     else:

@@ -1,10 +1,11 @@
 import sys
 
 import requests
-from PyQt6.QtCore import pyqtSignal
+from PyQt6.QtCore import pyqtSignal, Qt
 from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QHBoxLayout
+from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QHBoxLayout, QSplitter, QPushButton
 
+from Components.DetailsViewer import DetailsViewer
 from Components.FooterBar import FooterBar
 from Components.ListViewer import ListViewer
 from Dialogs.DataLoadingDialog import DataLoadingDialog
@@ -18,6 +19,8 @@ from Components.LoginBar import LoginBar
 
 class MainWindow(QMainWindow):
     is_already_logged_in: pyqtSignal = pyqtSignal()
+    card_clicked: pyqtSignal = pyqtSignal(list)
+    card_clicked_to_remove: pyqtSignal = pyqtSignal(list)
 
     def already_logged_in(self, later_call: bool = False):
         if get_setting("IS_LOGGED_IN_INFO_SAVED") and not later_call:
@@ -40,25 +43,87 @@ class MainWindow(QMainWindow):
         self.profile: Profile | None = None
         self.current_session_id: str = "627123"
         self.working_session_id: str = "627123"
+        self.courses: list[Course] = []
+        self.selected_course: Course | None = None
+        self.selected_course_to_remove: Course | None = None
 
         self.login_bar: LoginBar = LoginBar(self)
 
         self.footer_bar: FooterBar = FooterBar(self)
 
-        self.courses: list[Course] = []
-
         self.left_list_viewer: ListViewer = ListViewer(self)
+        self.right_list_viewer: ListViewer = ListViewer(self, True)
+
+        self.details_viewer: DetailsViewer = DetailsViewer(self)
+
+        self.add_button = QPushButton("Add")
+        self.add_button.setStyleSheet(ADD_BUTTON_STYLE)
+        self.add_button.clicked.connect(lambda _: self.right_list_viewer.add_course(self.selected_course))
+        self.add_button.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.add_button.setMinimumHeight(50)
+
+        self.remove_button = QPushButton("Remove")
+        self.remove_button.setStyleSheet(REMOVE_BUTTON_STYLE)
+        self.remove_button.clicked.connect(lambda _: self.right_list_viewer.remove_course(self.selected_course_to_remove))
+        self.remove_button.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.remove_button.setMinimumHeight(50)
+
+        self.clear_button = QPushButton("Clear")
+        self.clear_button.setStyleSheet(CLEAR_BUTTON_STYLE)
+        self.clear_button.clicked.connect(self.right_list_viewer.clear_courses)
+        self.clear_button.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.clear_button.setMinimumHeight(50)
+
+        self.middle_layout = QVBoxLayout()
+        self.middle_layout.setContentsMargins(0, 0, 0, 0)
+        self.middle_layout.setSpacing(3)
+        self.middle_layout.addStretch()
+        self.middle_layout.addWidget(self.add_button)
+        self.middle_layout.addSpacing(10)
+        self.middle_layout.addWidget(self.remove_button)
+        self.middle_layout.addWidget(self.clear_button)
+        self.middle_layout.addStretch()
 
         self.list_viewer_layout: QHBoxLayout = QHBoxLayout()
         self.list_viewer_layout.addWidget(
             self.left_list_viewer.list_viewer_widget)
+        self.list_viewer_layout.addLayout(self.middle_layout)
+
+        self.splitter: QSplitter = QSplitter()
+        self.splitter.addWidget(self.right_list_viewer.list_viewer_widget)
+        self.splitter.addWidget(self.details_viewer.details_viewer_widget)
+        self.splitter.setSizes([200, 500])
+        self.splitter.setChildrenCollapsible(False)
+        self.splitter.setLineWidth(0)
+        self.splitter.setMidLineWidth(0)
+        self.splitter.setHandleWidth(1)
+        self.splitter.setContentsMargins(0, 0, 0, 0)
+        self.splitter.setOrientation(Qt.Orientation.Vertical)
+        self.splitter.setStyleSheet(SPLITTER_STYLE)
+
+        self.right_panel_layout: QVBoxLayout = QVBoxLayout()
+        self.right_panel_layout.addWidget(self.splitter)
+        self.right_panel_layout.setContentsMargins(0, 0, 0, 0)
+        self.right_panel_layout.setSpacing(0)
+        self.list_viewer_layout.addLayout(self.right_panel_layout)
         self.list_viewer_layout.addStretch()
 
         self.main_layout.addWidget(self.login_bar.login_bar_widget)
         self.main_layout.addLayout(self.list_viewer_layout)
-        self.main_layout.addStretch()
         self.main_layout.addWidget(self.footer_bar.footer_bar_widget)
         self.is_already_logged_in.connect(self.already_logged_in)
+        self.card_clicked.connect(self.card_selected)
+        self.card_clicked_to_remove.connect(self.card_to_remove)
+
+    def card_selected(self, lst: list):
+        course = lst[0]
+        self.selected_course = course
+        self.details_viewer.set_course(course)
+
+    def card_to_remove(self, lst: list):
+        course = lst[0]
+        self.selected_course_to_remove = course
+        self.details_viewer.set_course(course)
 
     def logged_in(self, login: bool):
         if login:
