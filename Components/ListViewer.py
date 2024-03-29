@@ -59,7 +59,7 @@ class ListViewer:
     def search(self):
         search_text = self.search_bar.text().strip().lower()
         if len(search_text) >= 2 or len(search_text) == 0:
-            QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
+            # QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
             locker = QMutexLocker(self.search_mutex)
             if self.search_in_progress:
                 return
@@ -71,7 +71,7 @@ class ListViewer:
             self.thread.start()
 
     def search_finished_handler(self):
-        QApplication.restoreOverrideCursor()
+        # QApplication.restoreOverrideCursor()
         with QMutexLocker(self.search_mutex):
             self.search_in_progress = False
 

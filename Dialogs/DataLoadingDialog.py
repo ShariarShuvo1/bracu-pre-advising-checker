@@ -69,9 +69,9 @@ class DataLoadingDialog(QDialog):
         self.main_layout.addSpacing(10)
 
         self.data_parse_thread: DataParseThread | None = None
-        self.parse_begun()
-        self.exec()
-        # self.load_previous_data()
+        # self.parse_begun()
+        # self.exec()
+        self.load_previous_data()
 
     def parse_begun(self):
         self.load_previous_data_button.hide()
@@ -121,6 +121,7 @@ class DataLoadingDialog(QDialog):
         self.main.courses = courses
         self.main.left_list_viewer.generate_course_cards()
         self.main.left_list_viewer.list_viewer_widget.show()
+        self.main.left_list_viewer.search_bar.setFocus()
 
     def load_previous_data(self):
         if self.data_parse_thread:
