@@ -250,21 +250,41 @@ class DetailsViewer:
         self.faculty.show()
         if course.schedule.class_day_1:
             self.class_day_1_label.show()
+        else:
+            self.class_day_1_label.hide()
         if course.schedule.class_day_1_start_time:
             self.class_day_1_time_label.show()
+        else:
+            self.class_day_1_time_label.hide()
         if course.schedule.class_day_2:
             self.class_day_2_label.show()
+        else:
+            self.class_day_2_label.hide()
         if course.schedule.class_day_2_start_time:
             self.class_day_2_time_label.show()
+        else:
+            self.class_day_2_time_label.hide()
         if course.schedule.lab_day_1:
             self.lab_day_1_label.show()
+        else:
+            self.lab_day_1_label.hide()
         if course.schedule.lab_day_1_start_time:
             self.lab_day_1_time_label.show()
+        else:
+            self.lab_day_1_time_label.hide()
         if course.schedule.lab_day_2:
             self.lab_day_2_label.show()
+        else:
+            self.lab_day_2_label.hide()
         if course.schedule.lab_day_2_start_time:
             self.lab_day_2_time_label.show()
+        else:
+            self.lab_day_2_time_label.hide()
         if course.schedule.exam_date:
             self.exam_date_label.show()
+        else:
+            self.exam_date_label.hide()
         if course.schedule.exam_start_time:
             self.exam_time_label.show()
+        else:
+            self.exam_time_label.hide()

@@ -72,7 +72,6 @@ class ListViewer:
             self.thread.start()
 
     def search_finished_handler(self):
-        # QApplication.restoreOverrideCursor()
         with QMutexLocker(self.search_mutex):
             self.search_in_progress = False
 
@@ -100,6 +99,7 @@ class ListViewer:
                 if self.right:
                     self.course_card_list.append(
                         CourseCard(course, self.main, True))
+                    self.main.schedule_table.add_course(course)
                 else:
                     self.course_card_list.append(CourseCard(course, self.main))
                 self.scroll_area_layout.insertWidget(
@@ -111,11 +111,15 @@ class ListViewer:
                 if card.course == course:
                     card.course_card_widget.deleteLater()
                     self.course_card_list.remove(card)
+                    if self.right:
+                        self.main.schedule_table.remove_course(course)
                     break
 
     def clear_courses(self):
         for card in self.course_card_list:
             card.course_card_widget.deleteLater()
+            if self.right:
+                self.main.schedule_table.remove_course(card.course)
         self.course_card_list.clear()
         self.search_bar.clear()
         self.search()

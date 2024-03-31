@@ -8,6 +8,7 @@ from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QHB
 from Components.DetailsViewer import DetailsViewer
 from Components.FooterBar import FooterBar
 from Components.ListViewer import ListViewer
+from Components.ScheduleTable import ScheduleTable
 from Dialogs.DataLoadingDialog import DataLoadingDialog
 from Dialogs.LoginStatusDialog import LoginStatusDialog
 from Entity.Course import Course
@@ -58,13 +59,15 @@ class MainWindow(QMainWindow):
 
         self.add_button = QPushButton("Add")
         self.add_button.setStyleSheet(ADD_BUTTON_STYLE)
-        self.add_button.clicked.connect(lambda _: self.right_list_viewer.add_course(self.selected_course))
+        self.add_button.clicked.connect(
+            lambda _: self.right_list_viewer.add_course(self.selected_course))
         self.add_button.setCursor(Qt.CursorShape.PointingHandCursor)
         self.add_button.setMinimumHeight(50)
 
         self.remove_button = QPushButton("Remove")
         self.remove_button.setStyleSheet(REMOVE_BUTTON_STYLE)
-        self.remove_button.clicked.connect(lambda _: self.right_list_viewer.remove_course(self.selected_course_to_remove))
+        self.remove_button.clicked.connect(
+            lambda _: self.right_list_viewer.remove_course(self.selected_course_to_remove))
         self.remove_button.setCursor(Qt.CursorShape.PointingHandCursor)
         self.remove_button.setMinimumHeight(50)
 
@@ -101,12 +104,21 @@ class MainWindow(QMainWindow):
         self.splitter.setOrientation(Qt.Orientation.Vertical)
         self.splitter.setStyleSheet(SPLITTER_STYLE)
 
+        self.schedule_table: ScheduleTable = ScheduleTable(self)
+
         self.right_panel_layout: QVBoxLayout = QVBoxLayout()
         self.right_panel_layout.addWidget(self.splitter)
         self.right_panel_layout.setContentsMargins(0, 0, 0, 0)
         self.right_panel_layout.setSpacing(0)
         self.list_viewer_layout.addLayout(self.right_panel_layout)
-        self.list_viewer_layout.addStretch()
+
+        self.schedule_layout = QVBoxLayout()
+        self.schedule_layout.setContentsMargins(0, 0, 0, 0)
+        self.schedule_layout.setSpacing(0)
+
+        self.schedule_layout.addWidget(self.schedule_table.table)
+
+        self.list_viewer_layout.addLayout(self.schedule_layout)
 
         self.main_layout.addWidget(self.login_bar.login_bar_widget)
         self.main_layout.addLayout(self.list_viewer_layout)
