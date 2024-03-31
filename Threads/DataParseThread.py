@@ -30,7 +30,7 @@ class DataParseThread(QThread):
             self.data_found.emit([])
             return
         data: list[Course] = []
-        if get_setting("IS_LOGGED_IN_INFO_SAVED"):
+        if get_setting("IS_LOGGED_IN_INFO_SAVED") or get_setting("IS_LOGGED_IN"):
             data = get_courses_user(self.main, self.status_update)
         else:
             data = get_courses_guest(self.main, self.status_update)

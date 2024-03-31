@@ -6,6 +6,7 @@ from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QHBoxLayout, QSplitter, QPushButton
 
 from Components.DetailsViewer import DetailsViewer
+from Components.ExamViewer import ExamViewer
 from Components.FooterBar import FooterBar
 from Components.ListViewer import ListViewer
 from Components.ScheduleTable import ScheduleTable
@@ -56,6 +57,8 @@ class MainWindow(QMainWindow):
         self.right_list_viewer: ListViewer = ListViewer(self, True)
 
         self.details_viewer: DetailsViewer = DetailsViewer(self)
+
+        self.exam_viewer: ExamViewer = ExamViewer(self)
 
         self.add_button = QPushButton("Add")
         self.add_button.setStyleSheet(ADD_BUTTON_STYLE)
@@ -116,7 +119,15 @@ class MainWindow(QMainWindow):
         self.schedule_layout.setContentsMargins(0, 0, 0, 0)
         self.schedule_layout.setSpacing(0)
 
+        self.extra_info_layout = QHBoxLayout()
+        self.extra_info_layout.setContentsMargins(0, 0, 0, 0)
+        self.extra_info_layout.setSpacing(0)
+
+        self.extra_info_layout.addWidget(self.exam_viewer.exam_viewer_widget)
+        self.extra_info_layout.addStretch()
+
         self.schedule_layout.addWidget(self.schedule_table.table)
+        self.schedule_layout.addLayout(self.extra_info_layout)
 
         self.list_viewer_layout.addLayout(self.schedule_layout)
 

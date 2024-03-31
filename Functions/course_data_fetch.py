@@ -2,18 +2,9 @@ from datetime import datetime
 from typing import Union, Tuple, Dict, Optional
 
 from bs4 import BeautifulSoup, ResultSet, PageElement
-
-from Constants.course_details import course_details
 from Constants.day_data import day_checker, day_list
 from Entity.Course import Course
 from Entity.Schedule import Schedule
-
-
-def get_course_code_title_map(signal) -> dict:
-    signal.emit("Mapping course code to course title")
-    course_code_title_map = {
-        course_dict["cell"][2]: course_dict["cell"][3] for course_dict in course_details["rows"]}
-    return course_code_title_map
 
 
 def get_response(session, signal) -> ResultSet | None:
@@ -51,7 +42,7 @@ def get_exam_data(signal, session, url) -> dict | None:
         key = (exam["cell"][1], exam["cell"][3])
         if key not in exam_dict:
             exam_dict[key] = (exam["cell"][6], exam["cell"][7],
-                              exam["cell"][9], exam["cell"][10])
+                              exam["cell"][9], exam["cell"][10], exam["cell"][2])
     return exam_dict
 
 
@@ -112,8 +103,8 @@ def get_schedule_data(idx, total_courses, course_code, section, tr, exam_dict, s
                 lab_1, lab_2 = lab_2, lab_1
     signal.emit(
         f"[{idx + 1}/{total_courses}] Getting Exam Schedule for {course_code} Section[{section}]")
-    faculty, instructor_name, exam_date, exam_string = exam_dict.get(
-        (course_code, section), ("", "", "", ""))
+    faculty, instructor_name, exam_date, exam_string, _ = exam_dict.get(
+        (course_code, section), ("", "", "", "", ""))
     if exam_string is None:
         exam_string = ""
     if faculty is None:
@@ -186,7 +177,6 @@ def get_courses_guest(main, signal) -> list[Course]:
         return course_list
 
     signal.emit("Getting Course data")
-    course_code_title_map = get_course_code_title_map(signal)
 
     url = "https://gitfront.io/r/user-6015890/N6zXuFDpUWFu/data-sharing/raw/usisCurrentData.json"
     exam_dict = get_exam_data(signal, session, url)
@@ -201,7 +191,8 @@ def get_courses_guest(main, signal) -> list[Course]:
 
             signal.emit(
                 f"[{idx + 1}/{total_courses}] Getting Basic Data for {course_code} Section[{section}]")
-            course_title = course_code_title_map.get(course_code, "")
+            course_title = exam_dict.get(
+                (course_code, section), ("", "", "", "", ""))[4]
             program = tr.find_all("td")[2].get_text(strip=True)
             instructor_initial = tr.find_all("td")[3].get_text(strip=True)
             course_credit = float(tr.find_all("td")[4].get_text(strip=True))
@@ -338,23 +329,6 @@ def convert_exam_data_map(exam_data) -> Dict[Tuple[str, str, int], Dict[str, Uni
             "Saturday": data[17]
         }
     return exam_map
-
-    # for key, value in class_schedule_dict.items():
-    #     is_lab = value["room"].upper().endswith("L")
-    #     schedule_type = "lab" if is_lab else "day"
-    #     schedule_key = "lab_" if is_lab else "day_"
-    #
-    #     schedule = {
-    #         "day": value["day"],
-    #         "start_time": value["start_time"],
-    #         "end_time": value["end_time"],
-    #         "room": value["room"]
-    #     }
-    #
-    #     existing_schedule = class_schedule_map.get((key[0], key[1]), {})
-    #     existing_key = f"{schedule_key}2" if existing_schedule.get(f"{schedule_key}1") else f"{schedule_key}1"
-    #
-    #     class_schedule_map[(key[0], key[1])] = {existing_key: schedule}
 
 
 def convert_class_schedule_data_map(class_schedule_data) -> Dict[Tuple[str, str], Dict[str, Dict[str, str]]]:

@@ -134,7 +134,7 @@ class ScheduleTable:
                             self.table.setItem(i, col, QTableWidgetItem(
                                 f"{item.text()}\n{data}"))
                             self.table.item(i, col).setBackground(
-                                QColor("#ffabab"))
+                                QColor("#fc8d8d"))
                 if class_day_2:
                     if first_item.text() == class_2_time:
                         col = day_list.index(class_day_2) + 1
@@ -147,7 +147,7 @@ class ScheduleTable:
                             self.table.setItem(i, col, QTableWidgetItem(
                                 f"{item.text()}\n{data}"))
                             self.table.item(i, col).setBackground(
-                                QColor("#ffabab"))
+                                QColor("#fc8d8d"))
                 if lab_day_1:
                     if first_item.text() == lab_1_time:
                         col = day_list.index(lab_day_1) + 1
@@ -161,7 +161,7 @@ class ScheduleTable:
                             self.table.setItem(i, col, QTableWidgetItem(
                                 f"{item.text()}\n{lab_data}"))
                             self.table.item(i, col).setBackground(
-                                QColor("#ffabab"))
+                                QColor("#fc8d8d"))
                 if lab_day_2:
                     if first_item.text() == lab_2_time:
                         col = day_list.index(lab_day_2) + 1
@@ -175,14 +175,14 @@ class ScheduleTable:
                             self.table.setItem(i, col, QTableWidgetItem(
                                 f"{item.text()}\n{lab_data}"))
                             self.table.item(i, col).setBackground(
-                                QColor("#ffabab"))
+                                QColor("#fc8d8d"))
         self.table.resizeColumnsToContents()
         self.table.resizeRowsToContents()
 
     def table_clicked(self, index):
         x, y = index.row(), index.column()
         item = self.table.item(x, y)
-        if item is not None and item.text() != "" and y != 0:
+        if item is not None and item.text() != "" and y != 0 and not item.text().startswith("L"):
             text = item.text()
             text = text.split("\n")[0]
             course_code, section = text.split("-")
