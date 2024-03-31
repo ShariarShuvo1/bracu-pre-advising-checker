@@ -9,6 +9,7 @@ from Components.DetailsViewer import DetailsViewer
 from Components.ExamViewer import ExamViewer
 from Components.FooterBar import FooterBar
 from Components.ListViewer import ListViewer
+from Components.PreRequisiteViewer import PreRequisiteViewer
 from Components.ScheduleTable import ScheduleTable
 from Dialogs.DataLoadingDialog import DataLoadingDialog
 from Dialogs.LoginStatusDialog import LoginStatusDialog
@@ -46,6 +47,7 @@ class MainWindow(QMainWindow):
         self.current_session_id: str = "627123"
         self.working_session_id: str = "627123"
         self.courses: list[Course] = []
+        self.pre_requisite_data: dict[str, list[str]] = {}
         self.selected_course: Course | None = None
         self.selected_course_to_remove: Course | None = None
 
@@ -59,6 +61,8 @@ class MainWindow(QMainWindow):
         self.details_viewer: DetailsViewer = DetailsViewer(self)
 
         self.exam_viewer: ExamViewer = ExamViewer(self)
+        self.pre_requisite_viewer: PreRequisiteViewer = PreRequisiteViewer(
+            self)
 
         self.add_button = QPushButton("Add")
         self.add_button.setStyleSheet(ADD_BUTTON_STYLE)
@@ -66,6 +70,7 @@ class MainWindow(QMainWindow):
             lambda _: self.right_list_viewer.add_course(self.selected_course))
         self.add_button.setCursor(Qt.CursorShape.PointingHandCursor)
         self.add_button.setMinimumHeight(50)
+        self.add_button.setMaximumWidth(70)
 
         self.remove_button = QPushButton("Remove")
         self.remove_button.setStyleSheet(REMOVE_BUTTON_STYLE)
@@ -73,12 +78,14 @@ class MainWindow(QMainWindow):
             lambda _: self.right_list_viewer.remove_course(self.selected_course_to_remove))
         self.remove_button.setCursor(Qt.CursorShape.PointingHandCursor)
         self.remove_button.setMinimumHeight(50)
+        self.remove_button.setMaximumWidth(70)
 
         self.clear_button = QPushButton("Clear")
         self.clear_button.setStyleSheet(CLEAR_BUTTON_STYLE)
         self.clear_button.clicked.connect(self.right_list_viewer.clear_courses)
         self.clear_button.setCursor(Qt.CursorShape.PointingHandCursor)
         self.clear_button.setMinimumHeight(50)
+        self.clear_button.setMaximumWidth(70)
 
         self.middle_layout = QVBoxLayout()
         self.middle_layout.setContentsMargins(0, 0, 0, 0)
@@ -107,6 +114,16 @@ class MainWindow(QMainWindow):
         self.splitter.setOrientation(Qt.Orientation.Vertical)
         self.splitter.setStyleSheet(SPLITTER_STYLE)
 
+        self.schedule_extra_splitter: QSplitter = QSplitter()
+        self.schedule_extra_splitter.setSizes([600, 100])
+        self.schedule_extra_splitter.setChildrenCollapsible(False)
+        self.schedule_extra_splitter.setLineWidth(0)
+        self.schedule_extra_splitter.setMidLineWidth(0)
+        self.schedule_extra_splitter.setHandleWidth(1)
+        self.schedule_extra_splitter.setContentsMargins(0, 0, 0, 0)
+        self.schedule_extra_splitter.setOrientation(Qt.Orientation.Vertical)
+        self.schedule_extra_splitter.setStyleSheet(SPLITTER_STYLE)
+
         self.schedule_table: ScheduleTable = ScheduleTable(self)
 
         self.right_panel_layout: QVBoxLayout = QVBoxLayout()
@@ -124,11 +141,15 @@ class MainWindow(QMainWindow):
         self.extra_info_layout.setSpacing(0)
 
         self.extra_info_layout.addWidget(self.exam_viewer.exam_viewer_widget)
-        self.extra_info_layout.addStretch()
+        self.extra_info_layout.addWidget(
+            self.pre_requisite_viewer.pre_requisite_viewer_widget)
+        self.extra_info_widget = QWidget()
+        self.extra_info_widget.setLayout(self.extra_info_layout)
 
-        self.schedule_layout.addWidget(self.schedule_table.table)
-        self.schedule_layout.addLayout(self.extra_info_layout)
+        self.schedule_extra_splitter.addWidget(self.schedule_table.table)
+        self.schedule_extra_splitter.addWidget(self.extra_info_widget)
 
+        self.schedule_layout.addWidget(self.schedule_extra_splitter)
         self.list_viewer_layout.addLayout(self.schedule_layout)
 
         self.main_layout.addWidget(self.login_bar.login_bar_widget)
@@ -142,11 +163,13 @@ class MainWindow(QMainWindow):
         course = lst[0]
         self.selected_course = course
         self.details_viewer.set_course(course)
+        self.pre_requisite_viewer.set_course(course)
 
     def card_to_remove(self, lst: list):
         course = lst[0]
         self.selected_course_to_remove = course
         self.details_viewer.set_course(course)
+        # self.pre_requisite_viewer.add_course(course)
 
     def logged_in(self, login: bool):
         if login:

@@ -4,7 +4,7 @@ from PyQt6.QtWidgets import QDialog, QVBoxLayout, QLabel, QMessageBox, QPushButt
 
 from Entity.Course import Course
 from Settings.SettingsData import set_setting, get_setting, course_data_contains, get_backup_course_data, \
-    set_backup_course_data
+    set_backup_course_data, get_pre_requisite_data, pre_requisite_data_contains
 from Stylesheet.LoginStatusDialogStylesheet import STATUS_LABEL_STYLE, STATUS_LABEL_ERROR_STYLE, \
     STATUS_LABEL_SUCCESS_STYLE, TRY_AGAIN_BUTTON_STYLE
 from Stylesheet.ProfileDialogStylesheet import DIALOG_STYLE
@@ -69,9 +69,9 @@ class DataLoadingDialog(QDialog):
         self.main_layout.addSpacing(10)
 
         self.data_parse_thread: DataParseThread | None = None
-        # self.parse_begun()
-        # self.exec()
-        self.load_previous_data()
+        self.parse_begun()
+        self.exec()
+        # self.load_previous_data()
 
     def parse_begun(self):
         self.load_previous_data_button.hide()
@@ -119,6 +119,7 @@ class DataLoadingDialog(QDialog):
     def body_generator(self, courses: list[Course]):
         self.main.left_list_viewer.list_viewer_widget.hide()
         self.main.courses = courses
+        self.main.pre_requisite_data = get_pre_requisite_data()
         self.main.left_list_viewer.generate_course_cards()
         self.main.left_list_viewer.list_viewer_widget.show()
         self.main.left_list_viewer.search_bar.setFocus()
@@ -136,5 +137,5 @@ class DataLoadingDialog(QDialog):
             self.body_generator(data)
             self.close()
         else:
-            if course_data_contains():
+            if course_data_contains() and pre_requisite_data_contains():
                 self.load_previous_data_button.show()

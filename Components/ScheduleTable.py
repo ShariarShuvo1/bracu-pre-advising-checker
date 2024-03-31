@@ -37,14 +37,19 @@ class ScheduleTable:
         self.table.setStyleSheet(TABLE_STYLE)
         self.table.setCursor(Qt.CursorShape.PointingHandCursor)
         self.table.clicked.connect(self.table_clicked)
+        self.table.hide()
 
     def add_course(self, course: Course):
         self.courses.append(course)
         self.update_table()
+        if self.table.rowCount() > 0:
+            self.table.show()
 
     def remove_course(self, course: Course):
         self.courses.remove(course)
         self.update_table()
+        if self.table.rowCount() == 0:
+            self.table.hide()
 
     def update_table(self):
         self.table.setRowCount(0)
@@ -182,14 +187,24 @@ class ScheduleTable:
     def table_clicked(self, index):
         x, y = index.row(), index.column()
         item = self.table.item(x, y)
-        if item is not None and item.text() != "" and y != 0 and not item.text().startswith("L"):
+        if item is not None and item.text() != "" and y != 0:
             text = item.text()
             text = text.split("\n")[0]
-            course_code, section = text.split("-")
+            split_text = text.split("-")
+            if text[0] == "L":
+                split_text = split_text[1:]
+            if len(split_text) == 2:
+                course_code, section = split_text
+            elif len(split_text) == 3:
+                course_code = split_text[0]
+                section = "-".join(split_text[1:])
+            else:
+                return
             section = section[1:-1]
             selected_course = None
             for course in self.courses:
                 if course.course_code == course_code and course.section == section:
                     selected_course = course
                     break
-            self.main.card_clicked.emit([selected_course])
+            if selected_course:
+                self.main.card_clicked.emit([selected_course])

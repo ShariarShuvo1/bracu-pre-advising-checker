@@ -18,8 +18,6 @@ class ExamViewer:
         self.exam_viewer_layout.setContentsMargins(0, 2, 0, 0)
         self.exam_viewer_layout.setSpacing(0)
         self.exam_viewer_widget.setLayout(self.exam_viewer_layout)
-        self.exam_viewer_widget.setMinimumWidth(330)
-        self.exam_viewer_widget.setMaximumHeight(350)
         self.exam_viewer_widget.setStyleSheet(LIST_VIEWER_WIDGET_STYLE)
 
         self.scroll_area: QScrollArea = QScrollArea()

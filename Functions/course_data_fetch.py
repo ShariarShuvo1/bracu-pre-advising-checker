@@ -165,7 +165,7 @@ def create_course_object(signal, idx, total_courses, course_code, course_title, 
     return course_object
 
 
-def get_courses_guest(main, signal) -> list[Course]:
+def get_courses_guest(main, signal) -> list[list[Course]]:
     course_list: list[Course] = []
     session = main.session
 
@@ -174,14 +174,14 @@ def get_courses_guest(main, signal) -> list[Course]:
     # This line is repeated on purpose to make sure the updated data is fetched
     tr_data = get_response(session, signal)
     if tr_data is None:
-        return course_list
+        return [course_list, {}]
 
     signal.emit("Getting Course data")
 
     url = "https://gitfront.io/r/user-6015890/N6zXuFDpUWFu/data-sharing/raw/usisCurrentData.json"
     exam_dict = get_exam_data(signal, session, url)
     if exam_dict is None:
-        return course_list
+        return [course_list, {}]
 
     total_courses = len(tr_data)
     for idx, tr in enumerate(tr_data):
@@ -212,7 +212,8 @@ def get_courses_guest(main, signal) -> list[Course]:
             signal.emit(f"Error: {e}")
             continue
     signal.emit("Data parsing complete")
-    return course_list
+    x = get_pre_requisite(main, signal)
+    return [course_list, x]
 
 
 def get_usis_json_data(session, url, signal, message):
@@ -550,7 +551,7 @@ def combine_exam_map_with_class_schedule_map(
     return schedule_map
 
 
-def get_courses_user(main, signal) -> list[Course]:
+def get_courses_user(main, signal) -> list[list[Course]]:
     course_list: list[Course] = []
     session = main.session
 
@@ -561,7 +562,7 @@ def get_courses_user(main, signal) -> list[Course]:
                                     f"&_search=false&nd=1711516270344&rows=-1&page="
                                     f"1&sidx=id&sord=desc", signal, "available courses")
     if seats_data is None:
-        return course_list
+        return [course_list, {}]
     signal.emit("Converting available courses to HashMap")
     seats_map: Dict[Tuple[str, str], Dict[str, Union[str,
                                                      float, int]]] = convert_seats_data_map(seats_data)
@@ -572,7 +573,7 @@ def get_courses_user(main, signal) -> list[Course]:
                                    f"&_search=false&nd=1711519391647&rows=-1&page=1&"
                                    f"sidx=course_code&sord=asc", signal, "exam dates")
     if exam_data is None:
-        return course_list
+        return [course_list, {}]
     signal.emit("Mapping exam data to HashMap")
     exam_map: Dict[Tuple[str, str, int], Dict[str,
                                               Union[str, None]]] = convert_exam_data_map(exam_data)
@@ -584,7 +585,7 @@ def get_courses_user(main, signal) -> list[Course]:
                                              f"&_search=false&nd=1711567882232&rows=-1&page=1&si"
                                              f"dx=course_code&sord=asc", signal, "class schedules")
     if class_schedule_data is None:
-        return course_list
+        return [course_list, {}]
     signal.emit("Mapping class schedule data to HashMap")
     class_schedule_map: Dict[Tuple[str, str], Dict[str, Dict[str, str]]] = (
         convert_class_schedule_data_map(class_schedule_data))
@@ -683,4 +684,65 @@ def get_courses_user(main, signal) -> list[Course]:
             signal.emit(f"Error: {e}")
             continue
     signal.emit("Data parsing complete")
-    return course_list
+    x = get_pre_requisite(main, signal, True)
+    return [course_list, x]
+
+
+def dfs(node, visited, dependent_children, pre_requisite_courses):
+    visited.add(node)
+    for child in pre_requisite_courses.get(node, []):
+        dependent_children.append(child)
+        if child not in visited:
+            dfs(child, visited, dependent_children, pre_requisite_courses)
+
+
+def get_dependent_children(node, pre_requisite_courses):
+    dependent_children = []
+    visited = set()
+    dfs(node, visited, dependent_children, pre_requisite_courses)
+    return dependent_children
+
+
+def get_pre_requisite(main, signal, user=False):
+    session = main.session
+    if user:
+        course_data = get_usis_json_data(session, "https://usis.bracu.ac.bd/academia/"
+                                                  "academicCoursePreRequisite/preRequsitelist?_"
+                                                  "search=false&nd=1711855990436&rows=-1&page="
+                                                  "1&sidx=course_code&sord=desc", signal, "pre-requisite courses")
+    else:
+        course_data = get_usis_json_data(session, "https://gitfront.io/r/user-6015890/N6zXuFDpUWFu/"
+                                                  "data-sharing/raw/prereq.json", signal, "pre-requisite courses")
+    if course_data is None:
+        return []
+    pre_requisite_courses = {}
+    signal.emit("Converting pre-requisite courses to HashMap")
+    for course in course_data:
+        data = course["cell"]
+        course_code = data[1].split("(")[0].strip()
+        pre_requisite_course_unrefined = data[2].split("\n")
+        pre_requisite_course = []
+        for pre_req in pre_requisite_course_unrefined:
+            pre_req = pre_req.split("(")[0].strip()
+            if pre_req not in pre_requisite_courses:
+                pre_requisite_courses[pre_req] = []
+            pre_requisite_course.append(pre_req)
+        pre_requisite_course.sort()
+        pre_requisite_courses[course_code] = pre_requisite_course
+    signal.emit("Sorting pre-requisite courses")
+    pre_requisite_courses = dict(sorted(pre_requisite_courses.items()))
+    signal.emit("Getting dependent children")
+    for course, pre_req in pre_requisite_courses.items():
+        additional_children = []
+        for value in pre_req:
+            children = get_dependent_children(value, pre_requisite_courses)
+            for c in children:
+                if c not in pre_req and c not in additional_children:
+                    additional_children.append(c)
+        pre_req.extend(additional_children)
+    signal.emit("Sorting pre-requisite courses")
+    for course, pre_req in pre_requisite_courses.items():
+        p = sorted(pre_req)
+        pre_requisite_courses[course] = p
+    signal.emit("Pre-requisite courses data ready")
+    return pre_requisite_courses
