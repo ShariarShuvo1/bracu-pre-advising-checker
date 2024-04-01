@@ -2,8 +2,9 @@ from PyQt6.QtCore import QThread, pyqtSignal
 
 from Entity.Course import Course
 from Functions.course_data_fetch import get_courses_guest, get_courses_user
+from Functions.prediction import get_course_data
 from Functions.usis_login import check_usis_connection, check_internet_connection
-from Settings.SettingsData import get_setting, set_pre_requisite_data
+from Settings.SettingsData import get_setting, set_pre_requisite_data, prediction_data_contains
 
 
 class DataParseThread(QThread):
@@ -31,6 +32,9 @@ class DataParseThread(QThread):
             return
         data: list[Course] = []
         if get_setting("IS_LOGGED_IN_INFO_SAVED") or get_setting("IS_LOGGED_IN"):
+            if not prediction_data_contains():
+                get_course_data(self.main, self.status_update)
+            self.main.footer_bar.get_resource()
             data, pre_req = get_courses_user(self.main, self.status_update)
         else:
             data, pre_req = get_courses_guest(self.main, self.status_update)

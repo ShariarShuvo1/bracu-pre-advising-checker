@@ -2,6 +2,8 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QScrollArea
 
 from Entity.Course import Course
+from Functions.prediction import predict_faculty
+from Settings.SettingsData import prediction_data_contains
 from Stylesheet.DetailsViewerStylesheet import *
 from Stylesheet.ListViewerStylesheet import LIST_VIEWER_WIDGET_STYLE, SCROLL_AREA_STYLE
 
@@ -49,6 +51,10 @@ class DetailsViewer:
         self.instructor_initial_label = QLabel("")
         self.instructor_initial_label.setStyleSheet(BOLD_LABEL_STYLE)
         self.instructor_initial_label.hide()
+
+        self.prediction_label = QLabel("")
+        self.prediction_label.setStyleSheet(NOT_BOLD_LABEL_STYLE)
+        self.prediction_label.hide()
 
         self.instructor_name_label = QLabel("")
         self.instructor_name_label.setStyleSheet(NOT_BOLD_LABEL_STYLE)
@@ -127,6 +133,7 @@ class DetailsViewer:
         self.scroll_area_layout.addWidget(self.course_title_label)
         self.scroll_area_layout.addWidget(self.section_label)
         self.scroll_area_layout.addWidget(self.instructor_initial_label)
+        self.scroll_area_layout.addWidget(self.prediction_label)
         self.scroll_area_layout.addWidget(self.instructor_name_label)
         self.scroll_area_layout.addWidget(self.seats_remaining_label)
         self.scroll_area_layout.addWidget(self.total_seats_label)
@@ -162,6 +169,16 @@ class DetailsViewer:
         self.section_label.setText(f"Section: {course.section}")
         self.instructor_initial_label.setText(
             f"Faculty Initial: {course.instructor_initial}")
+
+        if course.instructor_initial == "TBA" and prediction_data_contains():
+            predict_faculty_dict = predict_faculty(
+                course.course_code, course.section)
+            prediction = "Prediction:"
+            for key, value in predict_faculty_dict.items():
+                prediction += f"\n{key}: {value:.2f}%"
+            self.prediction_label.setText(prediction)
+            self.prediction_label.show()
+
         self.instructor_name_label.setText(
             f"Faculty Name: {course.instructor_name}")
         self.seats_remaining_label.setText(

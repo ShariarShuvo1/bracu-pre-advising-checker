@@ -43,3 +43,12 @@ LOGOUT_BUTTON_STYLE = """
         background-color: #b30202;
     }
 """
+
+CURRENT_SEMESTER_LABEL_STYLE = """
+    QLabel {
+        color: white;
+        font-size: 15px;
+        font-weight: bold;
+        padding: 5px;
+    }
+"""

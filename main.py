@@ -15,7 +15,8 @@ from Dialogs.DataLoadingDialog import DataLoadingDialog
 from Dialogs.LoginStatusDialog import LoginStatusDialog
 from Entity.Course import Course
 from Entity.Profile import Profile
-from Settings.SettingsData import get_setting
+from Settings.SettingsData import get_setting, working_session_id_contains, get_working_session_id, \
+    get_current_session_id, current_session_id_contains
 from Stylesheet.MainWindowStylesheet import *
 from Components.LoginBar import LoginBar
 
@@ -44,8 +45,14 @@ class MainWindow(QMainWindow):
 
         self.session: requests.sessions = requests.Session()
         self.profile: Profile | None = None
-        self.current_session_id: str = "627123"
-        self.working_session_id: str = "627123"
+        if working_session_id_contains():
+            self.working_session_id = get_working_session_id()
+        else:
+            self.working_session_id = ""
+        if current_session_id_contains():
+            self.current_session_id = get_current_session_id()
+        else:
+            self.current_session_id: str = ""
         self.courses: list[Course] = []
         self.pre_requisite_data: dict[str, list[str]] = {}
         self.selected_course: Course | None = None
@@ -161,15 +168,17 @@ class MainWindow(QMainWindow):
 
     def card_selected(self, lst: list):
         course = lst[0]
-        self.selected_course = course
-        self.details_viewer.set_course(course)
-        self.pre_requisite_viewer.set_course(course)
+        if course:
+            self.selected_course = course
+            self.details_viewer.set_course(course)
+            self.pre_requisite_viewer.set_course(course)
 
     def card_to_remove(self, lst: list):
         course = lst[0]
-        self.selected_course_to_remove = course
-        self.details_viewer.set_course(course)
-        # self.pre_requisite_viewer.add_course(course)
+        if course:
+            self.selected_course_to_remove = course
+            self.details_viewer.set_course(course)
+            self.pre_requisite_viewer.set_course(course)
 
     def logged_in(self, login: bool):
         if login:
@@ -177,7 +186,6 @@ class MainWindow(QMainWindow):
             self.footer_bar.login_button.hide()
             self.footer_bar.profile_button.show()
             self.footer_bar.logout_button.show()
-            self.footer_bar.get_resource()
         else:
             self.login_bar.login_bar_widget.show()
             self.footer_bar.login_button.show()

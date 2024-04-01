@@ -130,7 +130,7 @@ class SearchThread(QThread):
                             (terms["c"] in card.course.course_code.lower() if terms.get("c") else True) and
                             (terms["i"] in card.course.instructor_initial.lower() if terms.get("i") else True) and
                             (terms["p"] in card.course.program.lower() if terms.get("p") else True) and
-                            (terms["f"] in card.course.faculty.lower() if terms.get("f") else True) and
+                            ((terms["f"] in card.course.faculty.lower() if card.course.faculty else False) if terms.get("f") else True) and
                             (terms["in"] in card.course.instructor_name.replace(' ', "").lower() if terms.get("in") else True) and
                             (terms["ct"] in card.course.course_title.replace(' ', "").lower() if terms.get("ct") else True) and
                             (terms["ts"] <= card.course.total_seats if terms.get("ts") else True) and
@@ -177,7 +177,7 @@ class SearchThread(QThread):
                             (terms["c"] in card.course.course_code.lower() if terms.get("c") else False) or
                             (terms["i"] in card.course.instructor_initial.lower() if terms.get("i") else False) or
                             (terms["p"] in card.course.program.lower() if terms.get("p") else False) or
-                            (terms["f"] in card.course.faculty.lower() if terms.get("f") else False) or
+                            ((terms["f"] in card.course.faculty.lower() if card.course.faculty else False) if terms.get("f") else False) or
                             (terms["in"] in card.course.instructor_name.replace(' ', "").lower() if terms.get("in") else False) or
                             (terms["ct"] in card.course.course_title.replace(' ', "").lower() if terms.get("ct") else False) or
                             (terms["ts"] <= card.course.total_seats if terms.get("ts") else False) or

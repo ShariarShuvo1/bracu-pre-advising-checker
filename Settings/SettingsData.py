@@ -66,4 +66,64 @@ def set_pre_requisite_data(data: dict[str, list[str]]):
     settings.setValue("PRE_REQ_DATA", data)
 
 
+def set_working_session_id(session_id: str):
+    set_setting("WORKING_SESSION_ID", session_id)
+
+
+def get_working_session_id() -> str:
+    return get_setting("WORKING_SESSION_ID")
+
+
+def working_session_id_contains() -> bool:
+    return settings.contains("WORKING_SESSION_ID")
+
+
+def set_current_session_id(session_id: str):
+    set_setting("CURRENT_SESSION_ID", session_id)
+
+
+def get_current_session_id() -> str:
+    return get_setting("CURRENT_SESSION_ID")
+
+
+def current_session_id_contains() -> bool:
+    return settings.contains("CURRENT_SESSION_ID")
+
+
+def set_prediction_data(data):
+    settings.setValue("PREDICTION_DATA", data)
+
+
+def get_prediction_data():
+    return settings.value("PREDICTION_DATA")
+
+
+def prediction_data_contains():
+    return settings.contains("PREDICTION_DATA")
+
+
+def set_current_semester_name(name):
+    set_setting("CURRENT_SEMESTER_NAME", name)
+
+
+def get_current_semester_name() -> str:
+    return get_setting("CURRENT_SEMESTER_NAME")
+
+
+def current_semester_name_contains() -> bool:
+    return settings.contains("CURRENT_SEMESTER_NAME")
+
+
+def set_next_semester_name(name):
+    set_setting("NEXT_SEMESTER_NAME", name)
+
+
+def get_next_semester_name() -> str:
+    return get_setting("NEXT_SEMESTER_NAME")
+
+
+def next_semester_name_contains() -> bool:
+    return settings.contains("NEXT_SEMESTER_NAME")
+
+
 # reset_settings()
