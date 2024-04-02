@@ -69,9 +69,9 @@ class DataLoadingDialog(QDialog):
         self.main_layout.addSpacing(10)
 
         self.data_parse_thread: DataParseThread | None = None
-        self.parse_begun()
-        self.exec()
-        # self.load_previous_data()
+        # self.parse_begun()
+        # self.exec()
+        self.load_previous_data()
 
     def parse_begun(self):
         self.load_previous_data_button.hide()

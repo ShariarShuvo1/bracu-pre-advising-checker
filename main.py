@@ -8,6 +8,7 @@ from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QHB
 from Components.DetailsViewer import DetailsViewer
 from Components.ExamViewer import ExamViewer
 from Components.FooterBar import FooterBar
+from Components.HeaderBar import HeaderBar
 from Components.ListViewer import ListViewer
 from Components.PreRequisiteViewer import PreRequisiteViewer
 from Components.ScheduleTable import ScheduleTable
@@ -59,6 +60,7 @@ class MainWindow(QMainWindow):
         self.selected_course_to_remove: Course | None = None
 
         self.login_bar: LoginBar = LoginBar(self)
+        self.header_bar: HeaderBar = HeaderBar()
 
         self.footer_bar: FooterBar = FooterBar(self)
 
@@ -160,6 +162,7 @@ class MainWindow(QMainWindow):
         self.list_viewer_layout.addLayout(self.schedule_layout)
 
         self.main_layout.addWidget(self.login_bar.login_bar_widget)
+        self.main_layout.addWidget(self.header_bar.header_bar_widget)
         self.main_layout.addLayout(self.list_viewer_layout)
         self.main_layout.addWidget(self.footer_bar.footer_bar_widget)
         self.is_already_logged_in.connect(self.already_logged_in)
