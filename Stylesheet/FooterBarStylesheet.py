@@ -52,3 +52,21 @@ CURRENT_SEMESTER_LABEL_STYLE = """
         padding: 5px;
     }
 """
+
+HISTORY_BUTTON_STYLE = """
+    QPushButton {
+        background-color: #ff00ee;
+        color: black;
+        font-weight: bold;
+        font-size: 15px;
+        padding: 5px;
+        border-radius: 5px;
+        margin: 0px;
+    }
+    QPushButton:hover {
+        background-color: #d600c8;
+    }
+    QPushButton:pressed {
+        background-color: #b302a2;
+    }
+"""

@@ -1,8 +1,9 @@
 from PyQt6.QtCore import QSize, Qt
-from PyQt6.QtGui import QIcon, QPixmap
-from PyQt6.QtWidgets import QHBoxLayout, QWidget, QPushButton, QLabel
+from PyQt6.QtGui import QIcon, QPixmap, QCursor
+from PyQt6.QtWidgets import QHBoxLayout, QWidget, QPushButton, QLabel, QApplication
 
 from CustomWidget.LoginPushButton import LoginPushButton
+from Dialogs.HistoryDialog import HistoryDialog
 from Dialogs.ProfileDialog import ProfileDialog
 from Entity.Profile import Profile
 from Functions.logout import logout
@@ -45,6 +46,13 @@ class FooterBar:
         self.logout_button.setMaximumHeight(40)
         self.logout_button.hide()
 
+        self.history_button: QPushButton = QPushButton("History")
+        self.history_button.setStyleSheet(HISTORY_BUTTON_STYLE)
+        self.history_button.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.history_button.setToolTip("View your history")
+        self.history_button.setMaximumHeight(40)
+        self.history_button.clicked.connect(self.history_button_clicked)
+
         self.current_semester_label: QLabel = QLabel()
         self.current_semester_label.setStyleSheet(CURRENT_SEMESTER_LABEL_STYLE)
         self.current_semester_label.setMaximumHeight(40)
@@ -54,7 +62,7 @@ class FooterBar:
                 f"Showing data for: {name} {year}")
         else:
             self.current_semester_label.hide()
-
+            self.history_button.hide()
         self.next_semester_label: QLabel = QLabel()
         self.next_semester_label.setStyleSheet(CURRENT_SEMESTER_LABEL_STYLE)
         self.next_semester_label.setMaximumHeight(40)
@@ -69,10 +77,19 @@ class FooterBar:
         self.footer_bar_layout.addWidget(self.profile_button)
         self.footer_bar_layout.addWidget(self.logout_button)
         self.footer_bar_layout.addStretch()
+        self.footer_bar_layout.addWidget(self.history_button)
         self.footer_bar_layout.addWidget(self.current_semester_label)
         self.footer_bar_layout.addWidget(self.next_semester_label)
         self.profile_info_thread: ProfileInfoThread | None = None
         self.is_logged_in()
+        self.history_dialog = HistoryDialog(self.main)
+
+    def history_button_clicked(self):
+        if not self.history_dialog.body_generated:
+            QApplication.setOverrideCursor(QCursor(Qt.CursorShape.WaitCursor))
+            self.history_dialog.generate_course_list()
+            QApplication.restoreOverrideCursor()
+        self.history_dialog.exec()
 
     def profile_button_clicked(self):
         profile_dialog = ProfileDialog(self.main)

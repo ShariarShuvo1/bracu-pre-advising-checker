@@ -98,7 +98,6 @@ def predict_faculty(course_code, section):
 def get_course_data(main, signal):
     prediction_data = get_data(main, signal)
     prediction_data = synthesis_data(prediction_data, signal)
-    set_prediction_data(prediction_data)
 
     last_semester_text = list(prediction_data.keys())[-1]
     last_semester_name, last_semester_year, last_semester = last_semester_text.split(
@@ -148,5 +147,8 @@ def get_course_data(main, signal):
         f"Current semester: {current_semester_name} {current_semester_year}")
     main.footer_bar.current_semester_label.show()
     main.footer_bar.next_semester_label.show()
+    main.footer_bar.history_button.show()
     main.current_session_id = current_semester_code
     set_current_session_id(current_semester_code)
+    prediction_data.pop(last_semester_text)
+    set_prediction_data(prediction_data)
