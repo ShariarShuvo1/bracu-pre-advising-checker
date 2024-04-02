@@ -78,6 +78,7 @@ class ListViewer:
     def generate_course_cards(self):
         for card in self.course_card_list:
             card.course_card_widget.deleteLater()
+        self.course_card_list.clear()
 
         for course in self.main.courses:
             self.course_card_list.append(CourseCard(course, self.main))

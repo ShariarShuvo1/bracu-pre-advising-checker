@@ -11,7 +11,9 @@ class LoginPushButton(QPushButton):
         super().__init__(parent)
         self.main = main
         self.setText("Login to USIS")
-        self.setToolTip("Click here to login to your USIS account")
+        self.setToolTip("Click here to login to your USIS account\n"
+                        "This will ensure up-to-date data\n"
+                        "It will also enable features like TBA prediction")
         self.setCursor(Qt.CursorShape.PointingHandCursor)
         self.setMaximumWidth(200)
         self.setStyleSheet(LOGIN_BUTTON_STYLE)
