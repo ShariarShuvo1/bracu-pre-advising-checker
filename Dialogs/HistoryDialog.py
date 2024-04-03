@@ -1,4 +1,4 @@
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QEvent
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QDialog, QVBoxLayout, QLineEdit, QScrollArea, QWidget, QPushButton, QHBoxLayout
 
@@ -29,6 +29,7 @@ class HistoryDialog(QDialog):
         self.search_bar.setClearButtonEnabled(True)
         self.search_bar.setToolTip(
             f"Accepted Filter: 'or', 'and', 's', 'c', 'i'")
+        self.search_bar.installEventFilter(self)
 
         self.search_button: QPushButton = QPushButton("Search")
         self.search_button.setStyleSheet(SEARCH_BUTTON_STYLE)
@@ -57,6 +58,11 @@ class HistoryDialog(QDialog):
         self.main_layout.addLayout(self.search_layout)
         self.main_layout.addWidget(self.scroll_area)
         self.body_generated = False
+
+    def eventFilter(self, obj, event):
+        if event.type() == QEvent.Type.KeyPress and obj == self.search_bar and event.key() == Qt.Key.Key_Return:
+            self.search()
+        return super().eventFilter(obj, event)
 
     def search(self):
         search_text = self.search_bar.text().strip().lower()

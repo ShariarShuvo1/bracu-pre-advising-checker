@@ -1,10 +1,11 @@
 from PyQt6.QtCore import QSize, Qt
-from PyQt6.QtGui import QIcon, QPixmap, QCursor
+from PyQt6.QtGui import QIcon, QPixmap, QCursor, QMouseEvent
 from PyQt6.QtWidgets import QHBoxLayout, QWidget, QPushButton, QLabel, QApplication
 
 from CustomWidget.LoginPushButton import LoginPushButton
 from Dialogs.HistoryDialog import HistoryDialog
 from Dialogs.ProfileDialog import ProfileDialog
+from Dialogs.UserManualDialog import UserManualDialog
 from Entity.Profile import Profile
 from Functions.logout import logout
 from Settings.SettingsData import get_setting, current_semester_name_contains, get_current_semester_name, \
@@ -46,7 +47,21 @@ class FooterBar:
         self.logout_button.setMaximumHeight(40)
         self.logout_button.hide()
 
+        self.user_manual_button: QPushButton = QPushButton()
+        self.user_manual_button.setIcon(
+            QIcon("./Assets/Icons/user-manual.png"))
+        self.user_manual_button.setIconSize(QSize(40, 40))
+        self.user_manual_button.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.user_manual_button.setToolTip("View the user manual")
+        self.user_manual_button.setMaximumHeight(40)
+        self.user_manual_button.enterEvent = self.onHoverEnter
+        self.user_manual_button.leaveEvent = self.onHoverLeave
+        self.user_manual_button.mousePressEvent = self.mousePressEvent
+        self.user_manual_button.mouseReleaseEvent = self.onHoverEnter
+
         self.history_button: QPushButton = QPushButton("History")
+        self.history_button.setIcon(QIcon("./Assets/Icons/history.png"))
+        self.history_button.setIconSize(QSize(28, 28))
         self.history_button.setStyleSheet(HISTORY_BUTTON_STYLE)
         self.history_button.setCursor(Qt.CursorShape.PointingHandCursor)
         self.history_button.setToolTip("View your history")
@@ -77,12 +92,28 @@ class FooterBar:
         self.footer_bar_layout.addWidget(self.profile_button)
         self.footer_bar_layout.addWidget(self.logout_button)
         self.footer_bar_layout.addStretch()
+        self.footer_bar_layout.addWidget(self.user_manual_button)
         self.footer_bar_layout.addWidget(self.history_button)
         self.footer_bar_layout.addWidget(self.current_semester_label)
         self.footer_bar_layout.addWidget(self.next_semester_label)
         self.profile_info_thread: ProfileInfoThread | None = None
         self.is_logged_in()
         self.history_dialog = HistoryDialog(self.main)
+        self.user_manual = UserManualDialog(self.main)
+
+    def mousePressEvent(self, event):
+        self.user_manual_button.setIcon(
+            QIcon("./Assets/Icons/user-manual-clicked.png"))
+
+    def onHoverEnter(self, event):
+        if event.type() == 3:
+            self.user_manual.exec()
+        self.user_manual_button.setIcon(
+            QIcon("./Assets/Icons/user-manual-hover.png"))
+
+    def onHoverLeave(self, event):
+        self.user_manual_button.setIcon(
+            QIcon("./Assets/Icons/user-manual.png"))
 
     def history_button_clicked(self):
         if not self.history_dialog.body_generated:
