@@ -1,10 +1,15 @@
 from PyQt6.QtCore import Qt, QMutexLocker, QMutex
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLineEdit, QScrollArea, QApplication
+from PyQt6.QtGui import QIcon
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLineEdit, QScrollArea, QApplication, QMessageBox
 
 from Components.CourseCard import CourseCard
+from CustomWidget.MessageBox import message_dialog
 from Entity.Course import Course
+from Entity.ProfileCourse import ProfileCourse
+from Settings.SettingsData import get_setting
 from Stylesheet.ListViewerStylesheet import *
 from Threads.SearchThread import SearchThread
+from datetime import datetime
 
 
 def process_search_results(success, results):
@@ -91,8 +96,180 @@ class ListViewer:
                 return True
         return False
 
+    def seat_limit_reached(self, course: Course) -> bool:
+        is_booked_seat_allowed = self.main.header_bar.is_booked_seat_allowed()
+        if is_booked_seat_allowed:
+            return False
+        else:
+            if course.seats_remaining <= 0:
+                message_dialog(
+                    f"Seat limit reached for {course.course_code}[{course.section}]", "Seat Limit Reached")
+                return True
+        return False
+
+    def is_same_course(self, course: Course) -> bool:
+        is_theory_clash_allowed = self.main.header_bar.is_same_course_clash_allowed()
+        if is_theory_clash_allowed:
+            return False
+        else:
+            for card in self.course_card_list:
+                if card.course.course_code == course.course_code:
+                    message_dialog(
+                        f"Clash between {course.course_code}[{course.section}] and {
+                            card.course.course_code} [{card.course.section}]\n"
+                        f"Clash Reason: Same Course", "Same Course Clash")
+                    return True
+        return False
+
+    def is_lab_clash(self, course: Course) -> bool:
+        is_lab_clash_allowed = self.main.header_bar.is_lab_clash_allowed()
+        if is_lab_clash_allowed:
+            return False
+        else:
+            for card in self.course_card_list:
+                matched = False
+                if card.course.schedule.lab_day_1 and course.schedule.lab_day_1:
+                    if card.course.schedule.lab_day_1 == course.schedule.lab_day_1 and datetime.strptime(
+                            card.course.schedule.lab_day_1_start_time, "%I:%M %p") <= datetime.strptime(
+                            course.schedule.lab_day_1_end_time, "%I:%M %p") and datetime.strptime(
+                            card.course.schedule.lab_day_1_end_time, "%I:%M %p") >= datetime.strptime(
+                            course.schedule.lab_day_1_start_time, "%I:%M %p"):
+                        matched = True
+                if matched:
+                    message_dialog(
+                        f"Clash between {course.course_code}[{course.section}] and {
+                            card.course.course_code} [{card.course.section}]\n"
+                        f"Clash Reason: Lab Clash", "Lab Clash")
+                    return True
+                if card.course.schedule.lab_day_2 and course.schedule.lab_day_2:
+                    if card.course.schedule.lab_day_2 == course.schedule.lab_day_2 and datetime.strptime(
+                            card.course.schedule.lab_day_2_start_time, "%I:%M %p") <= datetime.strptime(
+                            course.schedule.lab_day_2_end_time, "%I:%M %p") and datetime.strptime(
+                            card.course.schedule.lab_day_2_end_time, "%I:%M %p") >= datetime.strptime(
+                            course.schedule.lab_day_2_start_time, "%I:%M %p"):
+                        matched = True
+                if matched:
+                    message_dialog(
+                        f"Clash between {course.course_code}[{course.section}] and {
+                            card.course.course_code} [{card.course.section}]\n"
+                        f"Clash Reason: Lab Clash", "Lab Clash")
+                    return True
+        return False
+
+    def is_theory_clash(self, course: Course) -> bool:
+        is_theory_clash_allowed = self.main.header_bar.is_theory_clash_allowed()
+        if is_theory_clash_allowed:
+            return False
+        else:
+            for card in self.course_card_list:
+                matched = False
+                if card.course.schedule.class_day_1 and course.schedule.class_day_1:
+                    if card.course.schedule.class_day_1 == course.schedule.class_day_1 and datetime.strptime(
+                            card.course.schedule.class_day_1_start_time, "%I:%M %p") <= datetime.strptime(
+                            course.schedule.class_day_1_end_time, "%I:%M %p") and datetime.strptime(
+                            card.course.schedule.class_day_1_end_time, "%I:%M %p") >= datetime.strptime(
+                            course.schedule.class_day_1_start_time, "%I:%M %p"):
+                        matched = True
+                if matched:
+                    message_dialog(
+                        f"Clash between {course.course_code}[{course.section}] and {
+                            card.course.course_code} [{card.course.section}]\n"
+                        f"Clash Reason: Theory Clash", "Theory Clash")
+                    return True
+                if card.course.schedule.class_day_2 and course.schedule.class_day_2:
+                    if card.course.schedule.class_day_2 == course.schedule.class_day_2 and datetime.strptime(
+                            card.course.schedule.class_day_2_start_time, "%I:%M %p") <= datetime.strptime(
+                            course.schedule.class_day_2_end_time, "%I:%M %p") and datetime.strptime(
+                            card.course.schedule.class_day_2_end_time, "%I:%M %p") >= datetime.strptime(
+                            course.schedule.class_day_2_start_time, "%I:%M %p"):
+                        matched = True
+                if matched:
+                    message_dialog(
+                        f"Clash between {course.course_code}[{course.section}] and {
+                            card.course.course_code} [{card.course.section}]\n"
+                        f"Clash Reason: Theory Clash", "Theory Clash")
+                    return True
+        return False
+
+    def is_exam_day_clash(self, course: Course) -> bool:
+        is_exam_day_clash_allowed = self.main.header_bar.is_exam_day_clash_allowed()
+        if is_exam_day_clash_allowed:
+            return False
+        else:
+            for card in self.course_card_list:
+                if card.course.schedule.exam_date == course.schedule.exam_date:
+                    message_dialog(
+                        f"Clash between {course.course_code}[{course.section}] and {
+                            card.course.course_code} [{card.course.section}]\n"
+                        f"Clash Reason: Exam Day Clash", "Exam Day Clash")
+                    return True
+        return False
+
+    def is_exam_time_clash(self, course: Course) -> bool:
+        is_exam_time_clash_allowed = self.main.header_bar.is_exam_time_clash_allowed()
+        if is_exam_time_clash_allowed:
+            return False
+        else:
+            for card in self.course_card_list:
+                matched = False
+                if card.course.schedule.exam_date == course.schedule.exam_date:
+                    if datetime.strptime(card.course.schedule.exam_start_time, "%I:%M %p") <= datetime.strptime(
+                            course.schedule.exam_end_time, "%I:%M %p") and datetime.strptime(
+                            card.course.schedule.exam_end_time, "%I:%M %p") >= datetime.strptime(
+                            course.schedule.exam_start_time, "%I:%M %p"):
+                        matched = True
+                if matched:
+                    message_dialog(
+                        f"Clash between {course.course_code}[{course.section}] and {
+                            card.course.course_code} [{card.course.section}]\n"
+                        f"Clash Reason: Exam Time Clash", "Exam Time Clash")
+                    return True
+        return False
+
+    def is_prerequisite_clash(self, course: Course) -> bool:
+        is_prerequisite_clash_allowed = self.main.header_bar.is_pre_requisite_clash_allowed()
+        if is_prerequisite_clash_allowed:
+            return False
+        else:
+            if get_setting("IS_LOGGED_IN") and self.main.pre_requisite_data and self.main.profile:
+                course_code = course.course_code
+                print(course_code)
+                pre_req: dict[str, list[str]] = self.main.pre_requisite_data
+                pre_req_for_course = pre_req.get(course_code)
+                if pre_req_for_course:
+                    completed_courses: list[ProfileCourse] = self.main.profile.courses
+                    clashed = []
+                    for pre_req_course in pre_req_for_course:
+                        if pre_req_course not in [course.course_code for course in completed_courses]:
+                            clashed.append(pre_req_course)
+                            continue
+                        clash = False
+                        for completed_course in completed_courses:
+                            if pre_req_course == completed_course.course_code:
+                                if completed_course.grade_point <= 0 and "Pending" not in completed_course.grade:
+                                    clash = True
+                                    break
+                        if clash:
+                            clashed.append(pre_req_course)
+                    if len(clashed) > 0:
+                        message_dialog(
+                            f"You have not completed the following pre-requisite courses for {
+                                course_code}:\n"
+                            f"{', '.join(clashed)}", "Pre-requisite Clash")
+                        return True
+        return False
+
     def validator(self, course: Course) -> bool:
-        return not self.is_duplicate(course)
+        return (
+            not self.is_duplicate(course) and
+            not self.seat_limit_reached(course) and
+            not self.is_same_course(course) and
+            not self.is_lab_clash(course) and
+            not self.is_theory_clash(course) and
+            not self.is_exam_day_clash(course) and
+            not self.is_exam_time_clash(course) and
+            not self.is_prerequisite_clash(course)
+        )
 
     def add_course(self, course: Course | None):
         if course:

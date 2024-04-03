@@ -185,11 +185,17 @@ class MainWindow(QMainWindow):
 
     def logged_in(self, login: bool):
         if login:
+            self.left_list_viewer.search_bar.setText("")
+            self.right_list_viewer.search_bar.setText("")
+            self.header_bar.pre_requisite_toggle.toggler_widget.show()
             self.login_bar.login_bar_widget.hide()
             self.footer_bar.login_button.hide()
             self.footer_bar.profile_button.show()
             self.footer_bar.logout_button.show()
         else:
+            self.left_list_viewer.search_bar.setText("")
+            self.right_list_viewer.search_bar.setText("")
+            self.header_bar.pre_requisite_toggle.toggler_widget.hide()
             self.login_bar.login_bar_widget.show()
             self.footer_bar.login_button.show()
             self.footer_bar.profile_button.hide()
