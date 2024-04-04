@@ -5,6 +5,7 @@ EMAIL_INPUT_STYLE = """
         border-radius: 5px;
         padding: 5px;
         color:black;
+        background-color: white;
     }
     QLineEdit:focus {
         border: 2px solid #cf82ff;
@@ -18,6 +19,7 @@ EMAIL_INPUT_ERROR_STYLE = """
         border-radius: 5px;
         padding: 5px;
         color:black;
+        background-color: white;
     }
     QLineEdit:focus {
         border: 2px solid red;

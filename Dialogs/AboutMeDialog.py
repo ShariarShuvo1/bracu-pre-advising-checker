@@ -26,12 +26,12 @@ class AboutMeDialog(QDialog):
         self.setStyleSheet(DIALOG_STYLE)
 
         self.title_label = QLabel("Hello there!")
-        self.title_label.setStyleSheet("font-size: 40px; font-weight: bold;")
+        self.title_label.setStyleSheet("font-size: 40px; font-weight: bold; color:black;")
         self.title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.main_layout.addWidget(self.title_label)
 
         self.name_label = QLabel("I am Shariar Islam Shuvo")
-        self.name_label.setStyleSheet("font-size: 26px; font-weight: bold;")
+        self.name_label.setStyleSheet("font-size: 26px; font-weight: bold; color:black;")
         self.name_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.main_layout.addWidget(self.name_label)
 
@@ -49,7 +49,7 @@ class AboutMeDialog(QDialog):
         self.github_button.setCursor(Qt.CursorShape.PointingHandCursor)
         self.github_button.clicked.connect(lambda: open_url(
             "https://github.com/ShariarShuvo1/bracu-pre-advising-checker"))
-        self.github_button.setStyleSheet("font-size: 16px; font-weight: bold;")
+        self.github_button.setStyleSheet("font-size: 16px; font-weight: bold; color:black;")
         self.row.addWidget(self.github_button)
 
         self.facebook_button = QPushButton("Facebook")
@@ -60,7 +60,7 @@ class AboutMeDialog(QDialog):
         self.facebook_button.clicked.connect(lambda: open_url(
             "https://www.facebook.com/ShariarShuvo01/"))
         self.facebook_button.setStyleSheet(
-            "font-size: 16px; font-weight: bold;")
+            "font-size: 16px; font-weight: bold; color:black;")
         self.row.addWidget(self.facebook_button)
 
         self.linkedin_button = QPushButton("LinkedIn")
@@ -71,7 +71,7 @@ class AboutMeDialog(QDialog):
         self.linkedin_button.clicked.connect(lambda: open_url(
             "https://www.linkedin.com/in/shariarshuvo1/"))
         self.linkedin_button.setStyleSheet(
-            "font-size: 16px; font-weight: bold;")
+            "font-size: 16px; font-weight: bold; color:black;")
         self.row.addWidget(self.linkedin_button)
 
         self.main_layout.addStretch()

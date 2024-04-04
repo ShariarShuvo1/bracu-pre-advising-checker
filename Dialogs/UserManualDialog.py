@@ -19,6 +19,7 @@ class UserManualDialog(QDialog):
         self.setStyleSheet(DIALOG_STYLE)
 
         self.keyword_label = QLabel()
+        self.keyword_label.setStyleSheet("color:black;")
         self.main_layout.addWidget(self.keyword_label)
 
         html_content = """
