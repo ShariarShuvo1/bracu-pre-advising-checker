@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from bs4 import BeautifulSoup
 
 from Settings.SettingsData import set_working_session_id, set_current_session_id, set_prediction_data, \

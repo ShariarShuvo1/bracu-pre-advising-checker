@@ -35,13 +35,6 @@ if get_setting("IS_LOGGED_IN") and not get_setting("IS_LOGGED_IN_INFO_SAVED"):
     set_setting("IS_LOGGED_IN_INFO_SAVED", False)
 
 
-def reset_settings():
-    set_setting("IS_LOGGED_IN", False)
-    set_setting("IS_LOGGED_IN_INFO_SAVED", False)
-    set_setting("EMAIL", "")
-    set_setting("PASSWORD", "")
-
-
 def course_data_contains() -> bool:
     return settings.contains("COURSE_DATA")
 
@@ -124,6 +117,3 @@ def get_next_semester_name() -> str:
 
 def next_semester_name_contains() -> bool:
     return settings.contains("NEXT_SEMESTER_NAME")
-
-
-# reset_settings()

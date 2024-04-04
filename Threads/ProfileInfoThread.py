@@ -1,4 +1,4 @@
-from PyQt6.QtCore import QThread, pyqtSignal
+from PyQt6.QtCore import QThread
 
 from Entity.Profile import Profile
 from Functions.get_profile_info import get_profile_info

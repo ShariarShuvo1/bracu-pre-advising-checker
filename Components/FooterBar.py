@@ -1,8 +1,9 @@
 from PyQt6.QtCore import QSize, Qt
-from PyQt6.QtGui import QIcon, QPixmap, QCursor, QMouseEvent
+from PyQt6.QtGui import QIcon, QPixmap, QCursor
 from PyQt6.QtWidgets import QHBoxLayout, QWidget, QPushButton, QLabel, QApplication
 
 from CustomWidget.LoginPushButton import LoginPushButton
+from Dialogs.AboutMeDialog import AboutMeDialog
 from Dialogs.HistoryDialog import HistoryDialog
 from Dialogs.ProfileDialog import ProfileDialog
 from Dialogs.UserManualDialog import UserManualDialog
@@ -54,10 +55,21 @@ class FooterBar:
         self.user_manual_button.setCursor(Qt.CursorShape.PointingHandCursor)
         self.user_manual_button.setToolTip("View the user manual")
         self.user_manual_button.setMaximumHeight(40)
-        self.user_manual_button.enterEvent = self.onHoverEnter
-        self.user_manual_button.leaveEvent = self.onHoverLeave
-        self.user_manual_button.mousePressEvent = self.mousePressEvent
-        self.user_manual_button.mouseReleaseEvent = self.onHoverEnter
+        self.user_manual_button.enterEvent = self.user_manual_on_hover_enter
+        self.user_manual_button.leaveEvent = self.user_manual_on_hover_leave
+        self.user_manual_button.mousePressEvent = self.user_manual_mouse_press_vent
+        self.user_manual_button.mouseReleaseEvent = self.user_manual_on_hover_enter
+
+        self.about_me_button: QPushButton = QPushButton()
+        self.about_me_button.setIcon(QIcon("./Assets/Icons/about-me.png"))
+        self.about_me_button.setIconSize(QSize(34, 34))
+        self.about_me_button.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.about_me_button.setToolTip("Learn about the developer")
+        self.about_me_button.setMaximumHeight(40)
+        self.about_me_button.enterEvent = self.about_me_on_hover_enter
+        self.about_me_button.leaveEvent = self.about_me_on_hover_leave
+        self.about_me_button.mousePressEvent = self.about_me_mouse_press_vent
+        self.about_me_button.mouseReleaseEvent = self.about_me_on_hover_enter
 
         self.history_button: QPushButton = QPushButton("History")
         self.history_button.setIcon(QIcon("./Assets/Icons/history.png"))
@@ -92,6 +104,7 @@ class FooterBar:
         self.footer_bar_layout.addWidget(self.profile_button)
         self.footer_bar_layout.addWidget(self.logout_button)
         self.footer_bar_layout.addStretch()
+        self.footer_bar_layout.addWidget(self.about_me_button)
         self.footer_bar_layout.addWidget(self.user_manual_button)
         self.footer_bar_layout.addWidget(self.history_button)
         self.footer_bar_layout.addWidget(self.current_semester_label)
@@ -100,18 +113,33 @@ class FooterBar:
         self.is_logged_in()
         self.history_dialog = HistoryDialog(self.main)
         self.user_manual = UserManualDialog(self.main)
+        self.about_me = AboutMeDialog(self.main)
 
-    def mousePressEvent(self, event):
+    def about_me_mouse_press_vent(self, event):
+        self.about_me_button.setIcon(
+            QIcon("./Assets/Icons/about-me-clicked.png"))
+
+    def about_me_on_hover_enter(self, event):
+        self.about_me_button.setIcon(
+            QIcon("./Assets/Icons/about-me-hover.png"))
+        if event.type() == 3:
+            self.about_me.exec()
+
+    def about_me_on_hover_leave(self, event):
+        self.about_me_button.setIcon(
+            QIcon("./Assets/Icons/about-me.png"))
+
+    def user_manual_mouse_press_vent(self, event):
         self.user_manual_button.setIcon(
             QIcon("./Assets/Icons/user-manual-clicked.png"))
 
-    def onHoverEnter(self, event):
-        if event.type() == 3:
-            self.user_manual.exec()
+    def user_manual_on_hover_enter(self, event):
         self.user_manual_button.setIcon(
             QIcon("./Assets/Icons/user-manual-hover.png"))
+        if event.type() == 3:
+            self.user_manual.exec()
 
-    def onHoverLeave(self, event):
+    def user_manual_on_hover_leave(self, event):
         self.user_manual_button.setIcon(
             QIcon("./Assets/Icons/user-manual.png"))
 

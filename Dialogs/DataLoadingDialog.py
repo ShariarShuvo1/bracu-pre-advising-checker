@@ -3,10 +3,9 @@ from PyQt6.QtGui import QIcon, QMovie
 from PyQt6.QtWidgets import QDialog, QVBoxLayout, QLabel, QMessageBox, QPushButton, QHBoxLayout
 
 from Entity.Course import Course
-from Settings.SettingsData import set_setting, get_setting, course_data_contains, get_backup_course_data, \
+from Settings.SettingsData import course_data_contains, get_backup_course_data, \
     set_backup_course_data, get_pre_requisite_data, pre_requisite_data_contains
-from Stylesheet.LoginStatusDialogStylesheet import STATUS_LABEL_STYLE, STATUS_LABEL_ERROR_STYLE, \
-    STATUS_LABEL_SUCCESS_STYLE, TRY_AGAIN_BUTTON_STYLE
+from Stylesheet.LoginStatusDialogStylesheet import STATUS_LABEL_STYLE, STATUS_LABEL_ERROR_STYLE, TRY_AGAIN_BUTTON_STYLE
 from Stylesheet.ProfileDialogStylesheet import DIALOG_STYLE
 from Threads.DataParseThread import DataParseThread
 
@@ -71,7 +70,6 @@ class DataLoadingDialog(QDialog):
         self.data_parse_thread: DataParseThread | None = None
         self.parse_begun()
         self.exec()
-        # self.load_previous_data()
 
     def parse_begun(self):
         self.load_previous_data_button.hide()

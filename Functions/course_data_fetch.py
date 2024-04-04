@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Union, Tuple, Dict, Optional
 
-from bs4 import BeautifulSoup, ResultSet, PageElement
+from bs4 import BeautifulSoup, ResultSet
 from Constants.day_data import day_checker, day_list
 from Entity.Course import Course
 from Entity.Schedule import Schedule

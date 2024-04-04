@@ -2,11 +2,8 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QScrollArea, QLabel
 
 from Entity.Course import Course
-from Functions.get_date_tooltip import get_date_tooltip
 from Stylesheet.ExamViewerStylesheet import *
 from Stylesheet.ListViewerStylesheet import LIST_VIEWER_WIDGET_STYLE
-
-from datetime import datetime
 
 
 class PreRequisiteViewer:

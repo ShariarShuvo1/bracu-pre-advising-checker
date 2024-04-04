@@ -1,6 +1,5 @@
 from PyQt6.QtCore import Qt, QMutexLocker, QMutex
-from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLineEdit, QScrollArea, QApplication, QMessageBox
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLineEdit, QScrollArea
 
 from Components.CourseCard import CourseCard
 from CustomWidget.MessageBox import message_dialog

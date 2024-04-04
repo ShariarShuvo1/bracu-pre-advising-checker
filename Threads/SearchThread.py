@@ -1,7 +1,6 @@
 from datetime import datetime
 
-from PyQt6.QtCore import QThread, pyqtSignal, Qt
-from PyQt6.QtWidgets import QApplication
+from PyQt6.QtCore import QThread, pyqtSignal
 
 from Components.CourseCard import CourseCard
 

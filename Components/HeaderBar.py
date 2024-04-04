@@ -1,7 +1,6 @@
 from PyQt6.QtWidgets import QWidget, QHBoxLayout
 
 from Components.Toggler import Toggler
-from CustomWidget.ToggleButton import ToggleButton
 from Settings.SettingsData import get_setting
 from Stylesheet.HeaderBarStylesheet import *
 
