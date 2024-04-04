@@ -4,6 +4,7 @@ COURSE_CODE_LABEL_STYLE = """
         font-size: 24px;
         font-weight: bold;
         padding: 5px;
+        color:black;
     }
 """
 
@@ -14,6 +15,7 @@ STRIKETHROUGH_COURSE_CODE_LABEL_STYLE = """
         font-weight: bold;
         padding: 5px;
         text-decoration: line-through;
+        color:black;
     }
 """
 
@@ -23,6 +25,7 @@ NOT_BOLD_LABEL_STYLE = """
         font-size: 14px;
         padding: 5px;
         border-radius: 5px;
+        color:black;
     }
 """
 
@@ -33,6 +36,7 @@ BOLD_LABEL_STYLE = """
         font-weight: bold;
         padding: 5px;
         border-radius: 5px;
+        color:black;
     }
 """
 
@@ -64,6 +68,7 @@ CLASS_LABEL_STYLE = """
         font-size: 14px;
         padding: 5px;
         border-radius: 5px;
+        color:black;
     }
 """
 
@@ -73,6 +78,7 @@ LAB_LABEL_STYLE = """
         font-size: 14px;
         padding: 5px;
         border-radius: 5px;
+        color:black;
     }
 """
 
@@ -82,5 +88,6 @@ EXAM_LABEL_STYLE = """
         font-size: 14px;
         padding: 5px;
         border-radius: 5px;
+        color:black;
     }
 """

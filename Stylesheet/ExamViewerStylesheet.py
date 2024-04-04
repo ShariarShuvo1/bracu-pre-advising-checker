@@ -71,6 +71,7 @@ DUPLICATE_TIME_COURSE_LABEL_STYLE: str = """
     QLabel {
         background-color: #fc8d8d;
         font-size: 14px;
+        color:black;
         font-weight: bold;
         padding: 5px;
         border: 2px solid black;
@@ -84,6 +85,7 @@ DUPLICATE_DATE_COURSE_LABEL_STYLE: str = """
     QLabel {
         background-color: #fcb8fc;
         font-size: 14px;
+        color:black;
         font-weight: bold;
         padding: 5px;
         border: 2px solid black;

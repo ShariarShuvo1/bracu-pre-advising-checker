@@ -4,6 +4,7 @@ TABLE_STYLE = """
         border: 0px;
         font-size: 12pt;
         gridline-color: #c5a3ff;
+        color:black;
     }
     QTableWidget::horizontalHandle {
         background-color: #c5a3ff;
@@ -16,5 +17,6 @@ TABLE_HEADER_STYLE = """
         background-color: #e3c4ff;
         font-size: 12pt;
         border: 1px solid #c5a3ff;
+        color:black;
     }
 """

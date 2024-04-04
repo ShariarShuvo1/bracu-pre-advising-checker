@@ -73,6 +73,7 @@ ERROR_LABEL_STYLE = """
 STRICKEN_LABEL_STYLE = """
     QLabel {
         background-color: transparent;
+        color:black;
         font-size: 14px;
         text-decoration: line-through;
         border: none;

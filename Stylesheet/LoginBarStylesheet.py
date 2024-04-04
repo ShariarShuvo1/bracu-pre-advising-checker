@@ -20,6 +20,7 @@ LOGIN_BUTTON_STYLE = """
         padding: 5px 10px;
         font-size: 16px;
         font-weight: bold;
+        color:black;
     }
     QPushButton:hover {
         background-color: #a64dff;
@@ -37,6 +38,7 @@ LOGIN_BUTTON_STYLE_HOVER = """
         padding: 5px 10px;
         font-size: 16px;
         font-weight: bold;
+        color:black;
     }
 """
 
@@ -44,6 +46,7 @@ LOGIN_BAR_MESSAGE_STYLE = """
     QLabel {
         font-size: 14px;
         font-weight: bold;
+        color:black;
     }
 """
 
@@ -53,6 +56,7 @@ CLOSE_BUTTON_STYLE = """
         border: none;
         border-radius: 5px;
         padding: 5px;
+        color:black;
     }
     QPushButton:hover {
         background-color: #ff4d4d;
@@ -68,6 +72,7 @@ CLOSE_BUTTON_STYLE_HOVER = """
         border: none;
         border-radius: 5px;
         padding: 5px;
+        color:black;
     }
     QPushButton:hover {
         background-color: #ff4d4d;

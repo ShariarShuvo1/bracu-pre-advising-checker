@@ -11,6 +11,7 @@ SEARCH_BAR_STYLE = """
         border-radius: 5px;
         padding: 5px;
         font-size: 15px;
+        color:black;
     }
     QLineEdit::hover {
         border: 2px solid #ff00ee;

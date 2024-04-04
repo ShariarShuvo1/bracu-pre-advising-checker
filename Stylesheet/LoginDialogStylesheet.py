@@ -4,6 +4,7 @@ EMAIL_INPUT_STYLE = """
         border: 2px solid #000000;
         border-radius: 5px;
         padding: 5px;
+        color:black;
     }
     QLineEdit:focus {
         border: 2px solid #cf82ff;
@@ -16,6 +17,7 @@ EMAIL_INPUT_ERROR_STYLE = """
         border: 2px solid red;
         border-radius: 5px;
         padding: 5px;
+        color:black;
     }
     QLineEdit:focus {
         border: 2px solid red;
@@ -26,6 +28,7 @@ EMAIL_LABEL_STYLE = """
     QLabel {
         font-size: 20px;
         padding-right: 10px;
+        color:black;
     }
 """
 
@@ -33,6 +36,7 @@ REMEMBER_ME_CHECKBOX_STYLE = """
     QCheckBox {
         font-size: 16px;
         padding-left: 5px;
+        color:black;
     }
 """
 
@@ -44,6 +48,7 @@ LOGIN_BUTTON_STYLE = """
         border-radius: 5px;
         padding: 5px;
         background-color: white;
+        color:black;
     }
     QPushButton:hover {
         background-color: #b672e0;
@@ -59,12 +64,14 @@ LOADING_LABEL_STYLE = """
         border: 2px solid black;
         border-radius: 5px;
         background-color: white;
+        color:black;
     }
 """
 
 STATUS_LABEL_STYLE = """
     QLabel {
         font-size: 12px;
+        color:black;
     }
 """
 
@@ -85,6 +92,7 @@ STATUS_LABEL_ERROR_STYLE = """
 INFO_BUTTON_STYLE = """
     QPushButton {
         background-color: transparent;
+        color:black;
     }
     QPushButton:hover {
         border-radius: 15px;
@@ -99,5 +107,6 @@ INFO_BUTTON_STYLE = """
 TOGGLE_BUTTON_STYLE = """
     QPushButton {
         background-color: transparent;
+        color:black;
     }
 """

@@ -17,6 +17,7 @@ ADD_BUTTON_STYLE = """
         padding: 5px;
         border-radius: 5px;
         font-weight: bold;
+        color:black;
     }
     QPushButton:hover {
         background-color: #1bf707;
@@ -33,6 +34,7 @@ REMOVE_BUTTON_STYLE = """
         padding: 5px;
         border-radius: 5px;
         font-weight: bold;
+        color:black;
     }
     QPushButton:hover {
         background-color: red;
@@ -49,6 +51,7 @@ CLEAR_BUTTON_STYLE = """
         padding: 5px;
         border-radius: 5px;
         font-weight: bold;
+        color:black;
     }
     QPushButton:hover {
         background-color: #00e1ff;

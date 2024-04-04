@@ -3,12 +3,14 @@ COURSE_CODE_STYLE = """
         font-size: 20px;
         font-weight: bold;
         padding: 5px;
+        color:black;
     }
 """
 COURSE_NAME_STYLE = """
     QLabel {
         font-size: 16px;
         padding: 5px;
+        color:black;
     }
 """
 COURSE_NAME_SMALL_STYLE = """
@@ -16,6 +18,7 @@ COURSE_NAME_SMALL_STYLE = """
         font-size: 14px;
         font-weight: bold;
         padding: 5px;
+        color:black;
     }
 """
 YOUR_COURSE_CARD_STYLE = """
