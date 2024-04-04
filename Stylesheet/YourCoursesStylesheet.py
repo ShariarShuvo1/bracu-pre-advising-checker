@@ -14,6 +14,7 @@ COURSE_SEARCH_INPUT_STYLE = """
         border-radius: 5px;
         padding: 5px;
         color:black;
+        background-color: white;
     }
     QLineEdit::hover {
         border: 2px solid #ff00ee;
