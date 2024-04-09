@@ -1,5 +1,6 @@
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QScrollArea, QLabel
+from typing import List, Tuple
 
 from Entity.Course import Course
 from Functions.get_date_tooltip import get_date_tooltip
@@ -12,7 +13,7 @@ from datetime import datetime
 class ExamViewer:
     def __init__(self, main):
         self.main = main
-        self.course_labels: list[tuple[Course, QLabel]] = []
+        self.course_labels: List[Tuple[Course, QLabel]] = []
         self.exam_viewer_widget: QWidget = QWidget()
         self.exam_viewer_layout: QVBoxLayout = QVBoxLayout()
         self.exam_viewer_layout.setContentsMargins(0, 2, 0, 0)

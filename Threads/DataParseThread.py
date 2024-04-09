@@ -1,4 +1,5 @@
 from PyQt6.QtCore import QThread, pyqtSignal
+from typing import List
 
 from Entity.Course import Course
 from Functions.course_data_fetch import get_courses_guest, get_courses_user
@@ -30,7 +31,7 @@ class DataParseThread(QThread):
             self.status_update.emit("USIS connection failed")
             self.data_found.emit([])
             return
-        data: list[Course] = []
+        data: List[Course] = []
         if get_setting("IS_LOGGED_IN_INFO_SAVED") or get_setting("IS_LOGGED_IN"):
             get_course_data(self.main, self.status_update)
             self.main.footer_bar.get_resource()

@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from PyQt6.QtCore import QThread, pyqtSignal
+from typing import List
 
 from Components.CourseCard import CourseCard
 
@@ -8,7 +9,7 @@ from Components.CourseCard import CourseCard
 class SearchThread(QThread):
     search_finished = pyqtSignal(bool, object)
 
-    def __init__(self, card_list: list[CourseCard], search_text):
+    def __init__(self, card_list: List[CourseCard], search_text):
         super().__init__()
         self.card_list = card_list
         self.search_text = search_text

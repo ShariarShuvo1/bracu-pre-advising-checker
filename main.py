@@ -4,6 +4,7 @@ import requests
 from PyQt6.QtCore import pyqtSignal, Qt
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QHBoxLayout, QSplitter, QPushButton
+from typing import List, Dict
 
 from Components.DetailsViewer import DetailsViewer
 from Components.ExamViewer import ExamViewer
@@ -15,7 +16,6 @@ from Components.ScheduleTable import ScheduleTable
 from Dialogs.DataLoadingDialog import DataLoadingDialog
 from Dialogs.LoginStatusDialog import LoginStatusDialog
 from Entity.Course import Course
-from Entity.Profile import Profile
 from Settings.SettingsData import get_setting, working_session_id_contains, get_working_session_id, \
     get_current_session_id, current_session_id_contains
 from Stylesheet.MainWindowStylesheet import *
@@ -45,7 +45,7 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.main_widget)
 
         self.session: requests.sessions = requests.Session()
-        self.profile: Profile | None = None
+        self.profile = None
         if working_session_id_contains():
             self.working_session_id = get_working_session_id()
         else:
@@ -54,10 +54,10 @@ class MainWindow(QMainWindow):
             self.current_session_id = get_current_session_id()
         else:
             self.current_session_id: str = ""
-        self.courses: list[Course] = []
-        self.pre_requisite_data: dict[str, list[str]] = {}
-        self.selected_course: Course | None = None
-        self.selected_course_to_remove: Course | None = None
+        self.courses: List[Course] = []
+        self.pre_requisite_data: Dict[str, List[str]] = {}
+        self.selected_course = None
+        self.selected_course_to_remove = None
 
         self.login_bar: LoginBar = LoginBar(self)
         self.header_bar: HeaderBar = HeaderBar()

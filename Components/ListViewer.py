@@ -1,5 +1,6 @@
 from PyQt6.QtCore import Qt, QMutexLocker, QMutex
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLineEdit, QScrollArea
+from typing import List, Dict
 
 from Components.CourseCard import CourseCard
 from CustomWidget.MessageBox import message_dialog
@@ -22,7 +23,7 @@ def process_search_results(success, results):
 
 class ListViewer:
     def __init__(self, main, right=False):
-        self.thread: SearchThread | None = None
+        self.thread = None
         self.search_in_progress = False
         self.search_mutex = QMutex()
         self.main = main
@@ -35,7 +36,7 @@ class ListViewer:
         self.list_viewer_widget.setFixedWidth(315)
         self.list_viewer_widget.setStyleSheet(LIST_VIEWER_WIDGET_STYLE)
 
-        self.course_card_list: list[CourseCard] = []
+        self.course_card_list: List[CourseCard] = []
 
         self.search_bar: QLineEdit = QLineEdit()
         self.search_bar.setPlaceholderText("Search")
@@ -64,7 +65,6 @@ class ListViewer:
     def search(self):
         search_text = self.search_bar.text().strip().lower()
         if len(search_text) >= 2 or len(search_text) == 0:
-            # QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
             locker = QMutexLocker(self.search_mutex)
             if self.search_in_progress:
                 return
@@ -114,8 +114,7 @@ class ListViewer:
             for card in self.course_card_list:
                 if card.course.course_code == course.course_code:
                     message_dialog(
-                        f"Clash between {course.course_code}[{course.section}] and {
-                            card.course.course_code} [{card.course.section}]\n"
+                        f"Clash between {course.course_code}[{course.section}] and {card.course.course_code} [{card.course.section}]\n"
                         f"Clash Reason: Same Course", "Same Course Clash")
                     return True
         return False
@@ -136,8 +135,7 @@ class ListViewer:
                         matched = True
                 if matched:
                     message_dialog(
-                        f"Clash between {course.course_code}[{course.section}] and {
-                            card.course.course_code} [{card.course.section}]\n"
+                        f"Clash between {course.course_code}[{course.section}] and {card.course.course_code} [{card.course.section}]\n"
                         f"Clash Reason: Lab Clash", "Lab Clash")
                     return True
                 if card.course.schedule.lab_day_2 and course.schedule.lab_day_2:
@@ -149,8 +147,7 @@ class ListViewer:
                         matched = True
                 if matched:
                     message_dialog(
-                        f"Clash between {course.course_code}[{course.section}] and {
-                            card.course.course_code} [{card.course.section}]\n"
+                        f"Clash between {course.course_code}[{course.section}] and {card.course.course_code} [{card.course.section}]\n"
                         f"Clash Reason: Lab Clash", "Lab Clash")
                     return True
         return False
@@ -171,8 +168,7 @@ class ListViewer:
                         matched = True
                 if matched:
                     message_dialog(
-                        f"Clash between {course.course_code}[{course.section}] and {
-                            card.course.course_code} [{card.course.section}]\n"
+                        f"Clash between {course.course_code}[{course.section}] and {card.course.course_code} [{card.course.section}]\n"
                         f"Clash Reason: Theory Clash", "Theory Clash")
                     return True
                 if card.course.schedule.class_day_2 and course.schedule.class_day_2:
@@ -184,8 +180,7 @@ class ListViewer:
                         matched = True
                 if matched:
                     message_dialog(
-                        f"Clash between {course.course_code}[{course.section}] and {
-                            card.course.course_code} [{card.course.section}]\n"
+                        f"Clash between {course.course_code}[{course.section}] and {card.course.course_code} [{card.course.section}]\n"
                         f"Clash Reason: Theory Clash", "Theory Clash")
                     return True
         return False
@@ -198,8 +193,7 @@ class ListViewer:
             for card in self.course_card_list:
                 if card.course.schedule.exam_date == course.schedule.exam_date:
                     message_dialog(
-                        f"Clash between {course.course_code}[{course.section}] and {
-                            card.course.course_code} [{card.course.section}]\n"
+                        f"Clash between {course.course_code}[{course.section}] and {card.course.course_code} [{card.course.section}]\n"
                         f"Clash Reason: Exam Day Clash", "Exam Day Clash")
                     return True
         return False
@@ -219,8 +213,7 @@ class ListViewer:
                         matched = True
                 if matched:
                     message_dialog(
-                        f"Clash between {course.course_code}[{course.section}] and {
-                            card.course.course_code} [{card.course.section}]\n"
+                        f"Clash between {course.course_code}[{course.section}] and {card.course.course_code} [{card.course.section}]\n"
                         f"Clash Reason: Exam Time Clash", "Exam Time Clash")
                     return True
         return False
@@ -233,10 +226,10 @@ class ListViewer:
             if get_setting("IS_LOGGED_IN") and self.main.pre_requisite_data and self.main.profile:
                 course_code = course.course_code
                 print(course_code)
-                pre_req: dict[str, list[str]] = self.main.pre_requisite_data
+                pre_req: Dict[str, List[str]] = self.main.pre_requisite_data
                 pre_req_for_course = pre_req.get(course_code)
                 if pre_req_for_course:
-                    completed_courses: list[ProfileCourse] = self.main.profile.courses
+                    completed_courses: List[ProfileCourse] = self.main.profile.courses
                     clashed = []
                     for pre_req_course in pre_req_for_course:
                         if pre_req_course not in [course.course_code for course in completed_courses]:
@@ -252,8 +245,7 @@ class ListViewer:
                             clashed.append(pre_req_course)
                     if len(clashed) > 0:
                         message_dialog(
-                            f"You have not completed the following pre-requisite courses for {
-                                course_code}:\n"
+                            f"You have not completed the following pre-requisite courses for {course_code}:\n"
                             f"{', '.join(clashed)}", "Pre-requisite Clash")
                         return True
         return False
@@ -270,7 +262,7 @@ class ListViewer:
             not self.is_prerequisite_clash(course)
         )
 
-    def add_course(self, course: Course | None):
+    def add_course(self, course):
         if course:
             if self.validator(course):
                 if self.right:
@@ -283,7 +275,7 @@ class ListViewer:
                 self.scroll_area_layout.insertWidget(
                     self.scroll_area_layout.count() - 1, self.course_card_list[-1].course_card_widget)
 
-    def remove_course(self, course: Course | None):
+    def remove_course(self, course):
         if course:
             for card in self.course_card_list:
                 if card.course == course:

@@ -1,4 +1,5 @@
 from PyQt6.QtCore import QSettings
+from typing import List, Dict
 
 from Entity.Course import Course
 
@@ -39,11 +40,11 @@ def course_data_contains() -> bool:
     return settings.contains("COURSE_DATA")
 
 
-def get_backup_course_data() -> list[Course]:
+def get_backup_course_data() -> List[Course]:
     return settings.value("COURSE_DATA")
 
 
-def set_backup_course_data(data: list[Course]):
+def set_backup_course_data(data: List[Course]):
     settings.setValue("COURSE_DATA", data)
 
 
@@ -51,11 +52,11 @@ def pre_requisite_data_contains() -> bool:
     return settings.contains("PRE_REQ_DATA")
 
 
-def get_pre_requisite_data() -> dict[str, list[str]]:
+def get_pre_requisite_data() -> Dict[str, List[str]]:
     return settings.value("PRE_REQ_DATA")
 
 
-def set_pre_requisite_data(data: dict[str, list[str]]):
+def set_pre_requisite_data(data: Dict[str, List[str]]):
     settings.setValue("PRE_REQ_DATA", data)
 
 

@@ -109,7 +109,7 @@ class FooterBar:
         self.footer_bar_layout.addWidget(self.history_button)
         self.footer_bar_layout.addWidget(self.current_semester_label)
         self.footer_bar_layout.addWidget(self.next_semester_label)
-        self.profile_info_thread: ProfileInfoThread | None = None
+        self.profile_info_thread = None
         self.is_logged_in()
         self.history_dialog = HistoryDialog(self.main)
         self.user_manual = UserManualDialog(self.main)

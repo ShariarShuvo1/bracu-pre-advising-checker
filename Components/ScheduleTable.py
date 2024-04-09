@@ -1,6 +1,7 @@
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor
 from PyQt6.QtWidgets import QTableWidget, QHeaderView, QAbstractItemView, QTableWidgetItem
+from typing import List
 
 from Entity.Course import Course
 from Stylesheet.ScheduleTableStylesheet import *
@@ -11,7 +12,7 @@ from datetime import datetime
 class ScheduleTable:
     def __init__(self, main):
         self.main = main
-        self.courses: list[Course] = []
+        self.courses: List[Course] = []
         self.table = QTableWidget()
         self.table.setColumnCount(8)
         self.table.setHorizontalHeaderLabels(
@@ -69,15 +70,13 @@ class ScheduleTable:
             if class_day_1:
                 class_day_1_start_time = course.schedule.class_day_1_start_time
                 class_day_1_end_time = course.schedule.class_day_1_end_time
-                class_1_time = f"{class_day_1_start_time}\n{
-                    class_day_1_end_time}"
+                class_1_time = f"{class_day_1_start_time}\n{class_day_1_end_time}"
 
             class_2_time = None
             if class_day_2:
                 class_day_2_start_time = course.schedule.class_day_2_start_time
                 class_day_2_end_time = course.schedule.class_day_2_end_time
-                class_2_time = f"{class_day_2_start_time}\n{
-                    class_day_2_end_time}"
+                class_2_time = f"{class_day_2_start_time}\n{class_day_2_end_time}"
 
             lab_1_time = None
             if lab_day_1:

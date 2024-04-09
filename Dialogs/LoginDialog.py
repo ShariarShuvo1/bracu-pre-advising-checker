@@ -123,7 +123,7 @@ class LoginDialog(QDialog):
         self.main_layout.addStretch()
         self.main_layout.addSpacing(10)
 
-        self.login_thread: LoginThread | None = None
+        self.login_thread = None
 
     def login_button_clicked(self):
         email = self.email_input.text()

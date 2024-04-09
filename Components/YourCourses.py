@@ -1,5 +1,6 @@
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit, QScrollArea, QHBoxLayout
+from typing import List
 
 from Components.YourCourseCard import YourCourseCard
 from Entity.Profile import Profile
@@ -17,7 +18,7 @@ class YourCourses:
         self.your_courses_layout.setSpacing(1)
         self.your_courses_widget.setLayout(self.your_courses_layout)
 
-        self.course_card: list[YourCourseCard] = []
+        self.course_card: List[YourCourseCard] = []
 
         self.title_label: QLabel = QLabel("Your Courses")
         self.title_label.setStyleSheet(TITLE_LABEL_STYLE)

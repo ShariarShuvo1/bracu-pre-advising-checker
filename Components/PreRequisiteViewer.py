@@ -1,5 +1,6 @@
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QScrollArea, QLabel
+from typing import Dict, List
 
 from Entity.Course import Course
 from Stylesheet.ExamViewerStylesheet import *
@@ -9,7 +10,7 @@ from Stylesheet.ListViewerStylesheet import LIST_VIEWER_WIDGET_STYLE
 class PreRequisiteViewer:
     def __init__(self, main):
         self.main = main
-        self.course_labels: list[QLabel] = []
+        self.course_labels: List[QLabel] = []
         self.pre_requisite_viewer_widget: QWidget = QWidget()
         self.pre_requisite_viewer_layout: QVBoxLayout = QVBoxLayout()
         self.pre_requisite_viewer_layout.setContentsMargins(2, 2, 0, 0)
@@ -44,7 +45,7 @@ class PreRequisiteViewer:
     def set_course(self, course: Course):
         self.clear_course()
         self.title_label.setText(f"Pre Requisite for {course.course_code}")
-        pre_req: dict[str, list[str]] = self.main.pre_requisite_data
+        pre_req: Dict[str, List[str]] = self.main.pre_requisite_data
         if pre_req.get(course.course_code):
             if len(pre_req[course.course_code]) == 0:
                 self.clear_course()

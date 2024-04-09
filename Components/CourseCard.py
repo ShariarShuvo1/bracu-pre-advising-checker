@@ -55,8 +55,7 @@ class CourseCard:
             str(self.course.seats_remaining))
         self.available_seats_label.setFixedWidth(30)
         self.available_seats_label.setToolTip(f"Available seats: {self.course.seats_remaining}\n"
-                                              f"Total seats: {
-                                                  self.course.total_seats}\n"
+                                              f"Total seats: {self.course.total_seats}\n"
                                               f"Booked seats: {self.course.seats_booked}")
         if self.course.seats_remaining > 0:
             self.available_seats_label.setStyleSheet(SUCCESS_LABEL_STYLE)

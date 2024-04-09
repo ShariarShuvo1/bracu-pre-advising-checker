@@ -11,7 +11,7 @@ from Stylesheet.ListViewerStylesheet import LIST_VIEWER_WIDGET_STYLE, SCROLL_ARE
 class DetailsViewer:
     def __init__(self, main):
         self.main = main
-        self.course: Course | None = None
+        self.course = None
         self.details_viewer_widget: QWidget = QWidget()
         self.details_viewer_layout: QVBoxLayout = QVBoxLayout()
         self.details_viewer_layout.setContentsMargins(5, 0, 5, 0)
@@ -156,7 +156,7 @@ class DetailsViewer:
         self.details_viewer_layout.addWidget(self.scroll_area)
         self.scroll_area_layout.addStretch()
 
-    def set_course(self, course: Course | None):
+    def set_course(self, course):
         if course is None:
             return
         self.course = course
@@ -200,48 +200,36 @@ class DetailsViewer:
                 f"Class Day 1: {course.schedule.class_day_1}")
         if course.schedule.class_day_1_start_time:
             start_time_text = f"{course.schedule.class_day_1_start_time}"
-            end_time_text = f" - {
-                course.schedule.class_day_1_end_time}" if course.schedule.class_day_1_end_time else ""
-            room_text = f" [Room: {
-                course.schedule.class_day_1_room}]" if course.schedule.class_day_1_room else ""
-            self.class_day_1_time_label.setText(f"Class Day 1 Time: {start_time_text}{
-                                                end_time_text}{room_text}")
+            end_time_text = f" - {course.schedule.class_day_1_end_time}" if course.schedule.class_day_1_end_time else ""
+            room_text = f" [Room: {course.schedule.class_day_1_room}]" if course.schedule.class_day_1_room else ""
+            self.class_day_1_time_label.setText(f"Class Day 1 Time: {start_time_text}{end_time_text}{room_text}")
 
         if course.schedule.class_day_2:
             self.class_day_2_label.setText(
                 f"Class Day 2: {course.schedule.class_day_2}")
         if course.schedule.class_day_2_start_time:
             start_time_text = f"{course.schedule.class_day_2_start_time}"
-            end_time_text = f" - {
-                course.schedule.class_day_2_end_time}" if course.schedule.class_day_2_end_time else ""
-            room_text = f" [Room: {
-                course.schedule.class_day_2_room}]" if course.schedule.class_day_2_room else ""
-            self.class_day_2_time_label.setText(f"Class Day 2 Time: {start_time_text}{
-                                                end_time_text}{room_text}")
+            end_time_text = f" - {course.schedule.class_day_2_end_time}" if course.schedule.class_day_2_end_time else ""
+            room_text = f" [Room: {course.schedule.class_day_2_room}]" if course.schedule.class_day_2_room else ""
+            self.class_day_2_time_label.setText(f"Class Day 2 Time: {start_time_text}{end_time_text}{room_text}")
 
         if course.schedule.lab_day_1:
             self.lab_day_1_label.setText(f"Lab 1: {course.schedule.lab_day_1}")
 
         if course.schedule.lab_day_1_start_time:
             start_time_text = f"{course.schedule.lab_day_1_start_time}"
-            end_time_text = f" - {
-                course.schedule.lab_day_1_end_time}" if course.schedule.lab_day_1_end_time else ""
-            room_text = f" [Room: {
-                course.schedule.lab_day_1_room}]" if course.schedule.lab_day_1_room else ""
-            self.lab_day_1_time_label.setText(f"Lab 1 Time: {start_time_text}{
-                                              end_time_text}{room_text}")
+            end_time_text = f" - {course.schedule.lab_day_1_end_time}" if course.schedule.lab_day_1_end_time else ""
+            room_text = f" [Room: {course.schedule.lab_day_1_room}]" if course.schedule.lab_day_1_room else ""
+            self.lab_day_1_time_label.setText(f"Lab 1 Time: {start_time_text}{end_time_text}{room_text}")
 
         if course.schedule.lab_day_2:
             self.lab_day_2_label.setText(f"Lab 2: {course.schedule.lab_day_2}")
 
         if course.schedule.lab_day_2_start_time:
             start_time_text = f"{course.schedule.lab_day_2_start_time}"
-            end_time_text = f" - {
-                course.schedule.lab_day_2_end_time}" if course.schedule.lab_day_2_end_time else ""
-            room_text = f" [Room: {
-                course.schedule.lab_day_2_room}]" if course.schedule.lab_day_2_room else ""
-            self.lab_day_2_time_label.setText(f"Lab 2 Time: {start_time_text}{
-                                              end_time_text}{room_text}")
+            end_time_text = f" - {course.schedule.lab_day_2_end_time}" if course.schedule.lab_day_2_end_time else ""
+            room_text = f" [Room: {course.schedule.lab_day_2_room}]" if course.schedule.lab_day_2_room else ""
+            self.lab_day_2_time_label.setText(f"Lab 2 Time: {start_time_text}{end_time_text}{room_text}")
 
         if course.schedule.exam_date:
             self.exam_date_label.setText(
@@ -251,8 +239,7 @@ class DetailsViewer:
 
         if course.schedule.exam_start_time:
             start_time_text = f"{course.schedule.exam_start_time}"
-            end_time_text = f" - {
-                course.schedule.exam_end_time}" if course.schedule.exam_end_time else ""
+            end_time_text = f" - {course.schedule.exam_end_time}" if course.schedule.exam_end_time else ""
             self.exam_time_label.setText(
                 f"Exam Time: {start_time_text}{end_time_text}")
 

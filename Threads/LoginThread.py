@@ -29,7 +29,7 @@ class LoginThread(QThread):
 
         self.status_update.emit("Logging in to USIS...")
 
-        login_status: bool | str = login_to_usis(
+        login_status = login_to_usis(
             self.main.session, self.email, self.password)
 
         if type(login_status) is str:

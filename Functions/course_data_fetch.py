@@ -1,13 +1,13 @@
 from datetime import datetime
-from typing import Union, Tuple, Dict, Optional
+from typing import Union, Tuple, Dict, Optional, List
 
-from bs4 import BeautifulSoup, ResultSet
+from bs4 import BeautifulSoup
 from Constants.day_data import day_checker, day_list
 from Entity.Course import Course
 from Entity.Schedule import Schedule
 
 
-def get_response(session, signal) -> ResultSet | None:
+def get_response(session, signal):
     try:
         response = session.get(
             "https://admissions.bracu.ac.bd/academia/admissionRequirement/getAvailableSeatStatus")
@@ -21,7 +21,7 @@ def get_response(session, signal) -> ResultSet | None:
     return tr_data
 
 
-def get_exam_data(signal, session, url) -> dict | None:
+def get_exam_data(signal, session, url):
     signal.emit("Getting exam dates")
     try:
         exam_response = session.get(
@@ -165,8 +165,8 @@ def create_course_object(signal, idx, total_courses, course_code, course_title, 
     return course_object
 
 
-def get_courses_guest(main, signal) -> list[list[Course]]:
-    course_list: list[Course] = []
+def get_courses_guest(main, signal) -> List[List[Course]]:
+    course_list: List[Course] = []
     session = main.session
 
     signal.emit("Getting available courses")
@@ -413,26 +413,26 @@ def combine_exam_map_with_class_schedule_map(
         course_title = exam_1["course_title"]
         faculty = exam_1["faculty"]
         instructor_name = exam_1["instructor_name"]
-        class_day_1: str | None = None
-        class_day_1_start_time: str | None = None
-        class_day_1_end_time: str | None = None
-        class_day_1_room: str | None = None
-        class_day_2: str | None = None
-        class_day_2_start_time: str | None = None
-        class_day_2_end_time: str | None = None
-        class_day_2_room: str | None = None
-        lab_day_1: str | None = None
-        lab_day_1_start_time: str | None = None
-        lab_day_1_end_time: str | None = None
-        lab_day_1_room: str | None = None
-        lab_day_2: str | None = None
-        lab_day_2_start_time: str | None = None
-        lab_day_2_end_time: str | None = None
-        lab_day_2_room: str | None = None
-        exam_date: str | None = None
-        exam_day: str | None = None
-        exam_start_time: str | None = None
-        exam_end_time: str | None = None
+        class_day_1 = None
+        class_day_1_start_time = None
+        class_day_1_end_time = None
+        class_day_1_room = None
+        class_day_2 = None
+        class_day_2_start_time = None
+        class_day_2_end_time = None
+        class_day_2_room = None
+        lab_day_1 = None
+        lab_day_1_start_time = None
+        lab_day_1_end_time = None
+        lab_day_1_room = None
+        lab_day_2 = None
+        lab_day_2_start_time = None
+        lab_day_2_end_time = None
+        lab_day_2_room = None
+        exam_date = None
+        exam_day = None
+        exam_start_time = None
+        exam_end_time = None
         if (exam := exam_1 or exam_2) and exam.get("exam_day"):
             exam_day = exam["exam_day"]
             exam_date = exam["exam_date"]
@@ -551,39 +551,36 @@ def combine_exam_map_with_class_schedule_map(
     return schedule_map
 
 
-def get_courses_user(main, signal) -> list[list[Course]]:
-    course_list: list[Course] = []
+def get_courses_user(main, signal) -> List[List[Course]]:
+    course_list: List[Course] = []
     session = main.session
 
     seats_data = get_usis_json_data(session, f"https://usis.bracu.ac.bd/academia/"
-                                    f"studentCourse/showCourseStatusList?query"
-                                    f"=&academiaSession={
-                                        main.working_session_id}"
-                                    f"&_search=false&nd=1711516270344&rows=-1&page="
-                                    f"1&sidx=id&sord=desc", signal, "available courses")
+                                             f"studentCourse/showCourseStatusList?query"
+                                             f"=&academiaSession={main.working_session_id}"
+                                             f"&_search=false&nd=1711516270344&rows=-1&page="
+                                             f"1&sidx=id&sord=desc", signal, "available courses")
     if seats_data is None:
         return [course_list, {}]
     signal.emit("Converting available courses to HashMap")
     seats_map: Dict[Tuple[str, str], Dict[str, Union[str,
-                                                     float, int]]] = convert_seats_data_map(seats_data)
+    float, int]]] = convert_seats_data_map(seats_data)
     exam_data = get_usis_json_data(session, f"https://usis.bracu.ac.bd/academia/ac"
-                                   f"ademicSection/listAcademicSectionWithSche"
-                                   f"dule?academiaSession={
-                                       main.working_session_id}"
-                                   f"&_search=false&nd=1711519391647&rows=-1&page=1&"
-                                   f"sidx=course_code&sord=asc", signal, "exam dates")
+                                            f"ademicSection/listAcademicSectionWithSche"
+                                            f"dule?academiaSession={main.working_session_id}"
+                                            f"&_search=false&nd=1711519391647&rows=-1&page=1&"
+                                            f"sidx=course_code&sord=asc", signal, "exam dates")
     if exam_data is None:
         return [course_list, {}]
     signal.emit("Mapping exam data to HashMap")
     exam_map: Dict[Tuple[str, str, int], Dict[str,
-                                              Union[str, None]]] = convert_exam_data_map(exam_data)
+    Union[str, None]]] = convert_exam_data_map(exam_data)
 
     class_schedule_data = get_usis_json_data(session, f"https://usis.bracu.ac.bd/academia/student"
-                                             f"Course/showClassScheduleInTabularFormatInGrid?"
-                                             f"query=&academiaSession={
-                                                 main.working_session_id}"
-                                             f"&_search=false&nd=1711567882232&rows=-1&page=1&si"
-                                             f"dx=course_code&sord=asc", signal, "class schedules")
+                                                      f"Course/showClassScheduleInTabularFormatInGrid?"
+                                                      f"query=&academiaSession={main.working_session_id}"
+                                                      f"&_search=false&nd=1711567882232&rows=-1&page=1&si"
+                                                      f"dx=course_code&sord=asc", signal, "class schedules")
     if class_schedule_data is None:
         return [course_list, {}]
     signal.emit("Mapping class schedule data to HashMap")

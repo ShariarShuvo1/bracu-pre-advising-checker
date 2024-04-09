@@ -1,4 +1,5 @@
 import requests
+from typing import List
 
 from Entity.ProfileCourse import ProfileCourse
 
@@ -9,13 +10,13 @@ class Profile:
                  name: str,
                  picture: requests.Response,
                  program: str,
-                 courses: list[ProfileCourse],
+                 courses: List[ProfileCourse],
                  ):
         self.student_id: str = student_id
         self.name: str = name
         self.picture: requests.Response = picture
         self.program: str = program
-        self.courses: list[ProfileCourse] = courses
+        self.courses: List[ProfileCourse] = courses
 
     def __str__(self):
         return f"Profile({self.student_id}, {self.name})"

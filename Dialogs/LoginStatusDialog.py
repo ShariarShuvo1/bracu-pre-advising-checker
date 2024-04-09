@@ -49,7 +49,7 @@ class LoginStatusDialog(QDialog):
         self.main_layout.addLayout(self.bottom_layout)
         self.main_layout.addSpacing(10)
 
-        self.login_thread: LoginThread | None = None
+        self.login_thread = None
         self.login_begun()
         self.exec()
 

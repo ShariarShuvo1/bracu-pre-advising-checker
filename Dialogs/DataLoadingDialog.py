@@ -1,6 +1,7 @@
 from PyQt6.QtCore import Qt, QSize
 from PyQt6.QtGui import QIcon, QMovie
 from PyQt6.QtWidgets import QDialog, QVBoxLayout, QLabel, QMessageBox, QPushButton, QHBoxLayout
+from typing import List
 
 from CustomWidget.LoginPushButton import LoginPushButton
 from Entity.Course import Course
@@ -72,7 +73,7 @@ class DataLoadingDialog(QDialog):
         self.main_layout.addLayout(self.bottom_layout)
         self.main_layout.addSpacing(10)
 
-        self.data_parse_thread: DataParseThread | None = None
+        self.data_parse_thread = None
         self.parse_begun()
         self.exec()
 
@@ -125,7 +126,7 @@ class DataLoadingDialog(QDialog):
             msg_box.setDefaultButton(QMessageBox.StandardButton.Ok)
             msg_box.exec()
 
-    def body_generator(self, courses: list[Course]):
+    def body_generator(self, courses: List[Course]):
         self.main.left_list_viewer.list_viewer_widget.hide()
         self.main.courses = courses
         self.main.pre_requisite_data = get_pre_requisite_data()
@@ -136,7 +137,7 @@ class DataLoadingDialog(QDialog):
     def load_previous_data(self):
         if self.data_parse_thread:
             self.data_parse_thread.terminate()
-        data: list[Course] = get_backup_course_data()
+        data: List[Course] = get_backup_course_data()
         self.body_generator(data)
         self.close()
 
