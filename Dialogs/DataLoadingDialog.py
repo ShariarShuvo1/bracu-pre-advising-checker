@@ -2,6 +2,7 @@ from PyQt6.QtCore import Qt, QSize
 from PyQt6.QtGui import QIcon, QMovie
 from PyQt6.QtWidgets import QDialog, QVBoxLayout, QLabel, QMessageBox, QPushButton, QHBoxLayout
 
+from CustomWidget.LoginPushButton import LoginPushButton
 from Entity.Course import Course
 from Settings.SettingsData import course_data_contains, get_backup_course_data, \
     set_backup_course_data, get_pre_requisite_data, pre_requisite_data_contains
@@ -44,6 +45,9 @@ class DataLoadingDialog(QDialog):
         self.try_again_button.setIcon(QIcon("./Assets/Icons/retry.png"))
         self.try_again_button.setIconSize(QSize(30, 30))
 
+        self.login_button: LoginPushButton = LoginPushButton(self.main)
+        self.login_button.clicked.connect(self.login_button_clicked)
+
         self.load_previous_data_button: QPushButton = QPushButton(
             "Load Previous Data")
         self.load_previous_data_button.setToolTip("Load the data that was fetched previously\n"
@@ -62,6 +66,7 @@ class DataLoadingDialog(QDialog):
         self.bottom_layout: QHBoxLayout = QHBoxLayout()
         self.bottom_layout.addStretch()
         self.bottom_layout.addWidget(self.try_again_button)
+        self.bottom_layout.addWidget(self.login_button)
         self.bottom_layout.addWidget(self.load_previous_data_button)
         self.bottom_layout.addStretch()
         self.main_layout.addLayout(self.bottom_layout)
@@ -71,7 +76,13 @@ class DataLoadingDialog(QDialog):
         self.parse_begun()
         self.exec()
 
+    def login_button_clicked(self):
+        if self.data_parse_thread.isRunning():
+            self.data_parse_thread.terminate()
+        self.login_button.login_dialog.exec()
+
     def parse_begun(self):
+        self.login_button.hide()
         self.load_previous_data_button.hide()
         movie = QMovie("./Assets/Icons/loading.gif")
         movie.setScaledSize(QSize(100, 100))
@@ -135,5 +146,10 @@ class DataLoadingDialog(QDialog):
             self.body_generator(data)
             self.close()
         else:
+            self.status_label.setText(
+                "No data found. Please try again or load previous data or login to fetch data from USIS")
+            self.status_label.setStyleSheet(STATUS_LABEL_ERROR_STYLE)
+            self.loading_label.clear()
             if course_data_contains() and pre_requisite_data_contains():
                 self.load_previous_data_button.show()
+            self.login_button.show()
