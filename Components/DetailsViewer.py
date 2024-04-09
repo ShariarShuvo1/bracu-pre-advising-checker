@@ -178,6 +178,8 @@ class DetailsViewer:
                 prediction += f"\n{key}: {value:.2f}%"
             self.prediction_label.setText(prediction)
             self.prediction_label.show()
+        else:
+            self.prediction_label.hide()
 
         self.instructor_name_label.setText(
             f"Faculty Name: {course.instructor_name}")

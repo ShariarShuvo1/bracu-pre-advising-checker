@@ -206,7 +206,7 @@ if __name__ == "__main__":
     app: QApplication = QApplication(sys.argv)
     window: MainWindow = MainWindow()
     window.setStyleSheet(MAIN_WINDOW_STYLE)
-    # window.showMaximized()
+    window.showMaximized()
     window.show()
     window.is_already_logged_in.emit()
     sys.exit(app.exec())

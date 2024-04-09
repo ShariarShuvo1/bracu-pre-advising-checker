@@ -600,7 +600,8 @@ def get_courses_user(main, signal) -> list[list[Course]]:
             signal.emit(
                 f"[{idx + 1}/{total_courses}] Getting Basic Data for {course_code} Section[{section}]")
             course_data = seats_map[(course_code, section)]
-            course_title = course_data["program"]
+            course_title = exam_map.get(
+                (course_code, section, 1), {}).get("course_title", "")
             program = course_data["program"]
             instructor_initial = course_data["instructor_initial"]
             course_credit = course_data["course_credit"]
