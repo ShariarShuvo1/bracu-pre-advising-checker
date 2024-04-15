@@ -80,6 +80,7 @@ class DataLoadingDialog(QDialog):
     def login_button_clicked(self):
         if self.data_parse_thread.isRunning():
             self.data_parse_thread.terminate()
+        self.close()
         self.login_button.login_dialog.exec()
 
     def parse_begun(self):
