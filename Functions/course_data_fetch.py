@@ -313,6 +313,11 @@ def convert_exam_data_map(exam_data) -> Dict[Tuple[str, str, int], Dict[str, Uni
         else:
             dict_key = (course_code, section, 1)
 
+        for i in range(len(data)):
+            if data[i] is not None and i >= 11:
+                if len(data[i]) > 40:
+                    data[i] = data[i][:34]
+
         exam_map[dict_key] = {
             "course_title": course_title,
             "faculty": faculty,

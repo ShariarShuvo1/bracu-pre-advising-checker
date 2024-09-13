@@ -212,12 +212,7 @@ class LoginDialog(QDialog):
             self.status_label.setStyleSheet(STATUS_LABEL_ERROR_STYLE)
             self.email_input.setStyleSheet(EMAIL_INPUT_ERROR_STYLE)
             return False
-        elif email.split("@")[1] == "g.bracu.ac.bd":
-            self.status_label.setText(
-                "Your Gsuit email is not your USIS email")
-            self.status_label.setStyleSheet(STATUS_LABEL_ERROR_STYLE)
-            self.email_input.setStyleSheet(EMAIL_INPUT_ERROR_STYLE)
-            return False
+
         return True
 
     def password_validation(self, password):
